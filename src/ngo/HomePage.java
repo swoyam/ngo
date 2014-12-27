@@ -5,22 +5,42 @@
  */
 package ngo;
 
+import java.awt.event.ActionEvent;
+import java.util.Map;
+import java.util.TreeMap;
+import javax.swing.AbstractAction;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
+import ngo.model.Dashboard;
+import ngo.search.TextPrompt;
+
 /**
  *
  * @author swoyambhu
  */
-public class HomePage extends javax.swing.JFrame {
-    
+public class HomePage extends javax.swing.JFrame implements DocumentListener {
+
     /**
      * Creates new form HomePage
      */
     public HomePage() {
         initComponents();
-                jTree1.setRootVisible(false);
+
+        //setResizable(false);
+        jTree1.setRootVisible(false);
+        jTree1.setModel(getTreeModel(new Dashboard().getSectorWiseOrganizations()));
         
-        
-        
-        
+        new TextPrompt("Search...", (JTextField) searchBox.getEditor().getEditorComponent());
+    }
+
+    class CancelAction extends AbstractAction {
+
+        public void actionPerformed(ActionEvent ev) {
+
+        }
     }
 
     /**
@@ -32,13 +52,30 @@ public class HomePage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
         title = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTree1 = new javax.swing.JTree();
-        jXSearchField1 = new org.jdesktop.swingx.JXSearchField();
+        searchMessage = new javax.swing.JLabel();
+        searchBox = new javax.swing.JComboBox();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        refreshMenu = new javax.swing.JMenuItem();
+        exitMenuItem = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        addNewOrganization = new javax.swing.JMenuItem();
+        editOrganization = new javax.swing.JMenuItem();
+        deleteOrganization = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         title.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         title.setForeground(new java.awt.Color(16, 59, 16));
@@ -49,79 +86,65 @@ public class HomePage extends javax.swing.JFrame {
         jLabel1.setText("Sectoral");
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
-        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("AGRICULTURE");
-        javax.swing.tree.DefaultMutableTreeNode treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Agriculture");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Forestry");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Environment  (Agro Forestry Environment Sector)");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("HEALTH");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("health1");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("EDUCATION");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Schools");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Colleges");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("LIVELIHOODS");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("livelihood1");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("CHILDREN");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("SOS");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("WOMEN AND DEVELOPMENT/EMPOWERMENT");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Women Empowerment and Development");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("HUMAN RIGHTS");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("hr1");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("CAPACITY DEVELOPMENT");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("cd1");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("WATER SANITATION");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("ws1");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("RELIGIOUS");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("rs1");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("YOUTH CLUBS");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("youth1");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("MOTHER GROUPS");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("mg1");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("OTHER");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("other1");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
         jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         jScrollPane2.setViewportView(jTree1);
 
-        jXSearchField1.setBackground(new java.awt.Color(218, 120, 21));
-        jXSearchField1.setPromptBackround(java.awt.Color.white);
-        jXSearchField1.addActionListener(new java.awt.event.ActionListener() {
+        searchBox.setEditable(true);
+        searchBox.setToolTipText("Search");
+        searchBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jXSearchField1ActionPerformed(evt);
+                searchBoxActionPerformed(evt);
             }
         });
-        jXSearchField1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jXSearchField1KeyTyped(evt);
+
+        jMenu1.setText("File");
+
+        refreshMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
+        refreshMenu.setText("Refresh");
+        refreshMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshMenuActionPerformed(evt);
             }
         });
+        jMenu1.add(refreshMenu);
+
+        exitMenuItem.setText("Exit");
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(exitMenuItem);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Organization");
+
+        addNewOrganization.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        addNewOrganization.setText("Add New");
+        addNewOrganization.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addNewOrganizationActionPerformed(evt);
+            }
+        });
+        jMenu2.add(addNewOrganization);
+
+        editOrganization.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        editOrganization.setText("Edit");
+        editOrganization.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editOrganizationActionPerformed(evt);
+            }
+        });
+        jMenu2.add(editOrganization);
+
+        deleteOrganization.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        deleteOrganization.setText("Delete");
+        jMenu2.add(deleteOrganization);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -130,14 +153,15 @@ public class HomePage extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jXSearchField1, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 813, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(searchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(searchMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -146,31 +170,58 @@ public class HomePage extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(title)
-                    .addComponent(jXSearchField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(searchBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(146, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchMessage)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jXSearchField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXSearchField1ActionPerformed
-        System.out.println("Hello World");
+    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_exitMenuItemActionPerformed
+
+    private void addNewOrganizationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewOrganizationActionPerformed
+        AddOrganization addOrganization = new AddOrganization();
+        addOrganization.setVisible(true);
+
+
+    }//GEN-LAST:event_addNewOrganizationActionPerformed
+
+    private void editOrganizationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOrganizationActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editOrganizationActionPerformed
+
+    private void refreshMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshMenuActionPerformed
+        refreshJTree();
+    }//GEN-LAST:event_refreshMenuActionPerformed
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        System.out.println("Window Refreshed");
+        refreshJTree();
+    }//GEN-LAST:event_formWindowGainedFocus
+
+    private void searchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBoxActionPerformed
         
-    }//GEN-LAST:event_jXSearchField1ActionPerformed
+    }//GEN-LAST:event_searchBoxActionPerformed
 
-    private void jXSearchField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jXSearchField1KeyTyped
+    private void refreshJTree() {
+        jTree1.setModel(getTreeModel(new Dashboard().getSectorWiseOrganizations()));
+        jTree1.repaint();
 
-    }//GEN-LAST:event_jXSearchField1KeyTyped
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -178,7 +229,7 @@ public class HomePage extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("GTK+".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -200,16 +251,79 @@ public class HomePage extends javax.swing.JFrame {
                 new HomePage().setVisible(true);
             }
         });
-        
-        
+
     }
-    
+
+    public TreeModel getTreeModel(TreeMap<String, TreeMap<Integer, String>> inputMap) {
+
+        javax.swing.tree.DefaultMutableTreeNode treeNodeRoot = new javax.swing.tree.DefaultMutableTreeNode("root");
+
+        for (Map.Entry<String, TreeMap<Integer, String>> firstLevelEntry : inputMap.entrySet()) {
+
+            javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode(firstLevelEntry.getKey());
+
+            for (Map.Entry<Integer, String> secondLevelEntry : firstLevelEntry.getValue().entrySet()) {
+                javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode(secondLevelEntry.getValue());
+                treeNode1.add(treeNode2);
+            }
+
+            treeNodeRoot.add(treeNode1);
+        }
+        DefaultTreeModel model = new DefaultTreeModel(treeNodeRoot);
+        return model;
+
+    }
+
+    public void search() {
+
+        String s = ((JTextField)searchBox.getEditor().getEditorComponent()).getText();
+        if (s.length() <= 0) {
+            message("");
+            return;
+        }
+
+        String content = "Hello World";
+        int index = content.indexOf(s, 0);
+        if (index >= 0) {
+            int end = index + s.length();
+            message("'" + s + "' found. Press ESC to end search");
+        } else {
+
+            message("'" + s + "' not found. Press ESC to start a new search");
+        }
+    }
+
+    void message(String msg) {
+        searchMessage.setText(msg);
+    }
+
+    // DocumentListener methods
+    public void insertUpdate(DocumentEvent ev) {
+        search();
+    }
+
+    public void removeUpdate(DocumentEvent ev) {
+        search();
+    }
+
+    public void changedUpdate(DocumentEvent ev) {
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem addNewOrganization;
+    private javax.swing.JMenuItem deleteOrganization;
+    private javax.swing.JMenuItem editOrganization;
+    private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTree jTree1;
-    private org.jdesktop.swingx.JXSearchField jXSearchField1;
+    private javax.swing.JMenuItem refreshMenu;
+    private javax.swing.JComboBox searchBox;
+    private javax.swing.JLabel searchMessage;
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }
