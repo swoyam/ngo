@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.TreeMap;
+import java.util.Vector;
 import ngo.dbConnect.SqliteJDBC;
 
 /**
@@ -85,5 +86,37 @@ public class Dashboard {
         }
         System.out.println("Operation completed successfully");
         return result;
+    }
+    
+    public Vector<String> getMatchingOrganizations(String queryWord) {
+
+        SqliteJDBC sqliteJDBC = new SqliteJDBC();
+
+        Vector<String> resultVector = new Vector<String>();
+        
+        Statement stmt = null;
+        try {
+            Connection c = sqliteJDBC.getSqliteConnection();
+            stmt = c.createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT organization.office_id, organization.office_name FROM organization WHERE office_name LIKE '%"+queryWord+"%'");
+            while (rs.next()) {
+
+                Integer officeId = rs.getInt("office_id");
+                String officeName = rs.getString("office_name");
+
+                resultVector.add(officeName);
+            }
+
+            rs.close();
+            stmt.close();
+            c.close();
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        System.out.println("Operation completed successfully");
+        return resultVector;
     }
 }

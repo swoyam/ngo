@@ -46,7 +46,9 @@ public class TextPrompt extends JLabel
     }
 
     public void focusLost(FocusEvent e) {
-        setSize(0, 0);
+        
+        checkForPrompt();
+        //setSize(0, 0);
     }
 
 //  Implement DocumentListener

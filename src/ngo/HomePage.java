@@ -5,13 +5,15 @@
  */
 package ngo;
 
-import java.awt.event.ActionEvent;
+import java.awt.EventQueue;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
-import javax.swing.AbstractAction;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import ngo.model.Dashboard;
@@ -21,7 +23,12 @@ import ngo.search.TextPrompt;
  *
  * @author swoyambhu
  */
-public class HomePage extends javax.swing.JFrame implements DocumentListener {
+public class HomePage extends javax.swing.JFrame {
+
+    private final JTextField searchBoxTextField;
+    private final Vector<String> vector = new Vector<String>();
+    private boolean hide_flag = false;
+    String[] defaultMessageForSearchBox = {"Type text to search."};
 
     /**
      * Creates new form HomePage
@@ -29,18 +36,80 @@ public class HomePage extends javax.swing.JFrame implements DocumentListener {
     public HomePage() {
         initComponents();
 
-        //setResizable(false);
+        setLocationRelativeTo(null);
         jTree1.setRootVisible(false);
         jTree1.setModel(getTreeModel(new Dashboard().getSectorWiseOrganizations()));
-        
+
         new TextPrompt("Search...", (JTextField) searchBox.getEditor().getEditorComponent());
+
+        searchBoxTextField = (JTextField) searchBox.getEditor().getEditorComponent();
+        searchBoxTextField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        String text = searchBoxTextField.getText();
+                        if (text.length() == 0) {
+                            searchBox.hidePopup();
+                            setModel(new DefaultComboBoxModel(defaultMessageForSearchBox), "");
+                        } else {
+                            DefaultComboBoxModel m = getSuggestedModel(text);
+                            if (m.getSize() == 0 || hide_flag) {
+                                searchBox.hidePopup();
+                                hide_flag = false;
+                            } else {
+                                setModel(m, text);
+                                searchBox.showPopup();
+                            }
+                        }
+                    }
+                });
+            }
+
+            public void keyPressed(KeyEvent e) {
+                String text = searchBoxTextField.getText();
+                int code = e.getKeyCode();
+                if (code == KeyEvent.VK_ENTER) {
+                    Vector<String> vector = new Dashboard().getMatchingOrganizations(text);
+                    if (!vector.contains(text)) {
+                        vector.addElement(text);
+                        Collections.sort(vector);
+                        setModel(getSuggestedModel(text), text);
+                    }
+                    SearchResultPage searchResultPage = new SearchResultPage(text);
+                    searchResultPage.setVisible(true);
+                    System.out.println(searchBoxTextField.getText());
+                    hide_flag = true;
+                } else if (code == KeyEvent.VK_ESCAPE) {
+                    hide_flag = true;
+                } else if (code == KeyEvent.VK_RIGHT) {
+                    Vector<String> vector = new Dashboard().getMatchingOrganizations(text);
+                    for (int i = 0; i < vector.size(); i++) {
+                        String str = vector.elementAt(i);
+                        if (str.toLowerCase().contains(text.toLowerCase())) {
+                            searchBox.setSelectedIndex(-1);
+                            searchBoxTextField.setText(str);
+                            return;
+                        }
+                    }
+                }
+            }
+        });
+
+        //setModel(new DefaultComboBoxModel(defaultMessage), "");
+
     }
 
-    class CancelAction extends AbstractAction {
+    private void setModel(DefaultComboBoxModel mdl, String str) {
+        searchBox.setModel(mdl);
+        searchBox.setSelectedIndex(-1);
+        searchBoxTextField.setText(str);
+    }
 
-        public void actionPerformed(ActionEvent ev) {
+    private static DefaultComboBoxModel getSuggestedModel(String text) {
 
-        }
+        DefaultComboBoxModel model = new DefaultComboBoxModel(new Dashboard().getMatchingOrganizations(text));
+
+        return model;
     }
 
     /**
@@ -190,8 +259,6 @@ public class HomePage extends javax.swing.JFrame implements DocumentListener {
     private void addNewOrganizationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewOrganizationActionPerformed
         AddOrganization addOrganization = new AddOrganization();
         addOrganization.setVisible(true);
-
-
     }//GEN-LAST:event_addNewOrganizationActionPerformed
 
     private void editOrganizationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOrganizationActionPerformed
@@ -208,7 +275,7 @@ public class HomePage extends javax.swing.JFrame implements DocumentListener {
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void searchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBoxActionPerformed
-        
+
     }//GEN-LAST:event_searchBoxActionPerformed
 
     private void refreshJTree() {
@@ -274,41 +341,7 @@ public class HomePage extends javax.swing.JFrame implements DocumentListener {
 
     }
 
-    public void search() {
-
-        String s = ((JTextField)searchBox.getEditor().getEditorComponent()).getText();
-        if (s.length() <= 0) {
-            message("");
-            return;
-        }
-
-        String content = "Hello World";
-        int index = content.indexOf(s, 0);
-        if (index >= 0) {
-            int end = index + s.length();
-            message("'" + s + "' found. Press ESC to end search");
-        } else {
-
-            message("'" + s + "' not found. Press ESC to start a new search");
-        }
-    }
-
-    void message(String msg) {
-        searchMessage.setText(msg);
-    }
-
-    // DocumentListener methods
-    public void insertUpdate(DocumentEvent ev) {
-        search();
-    }
-
-    public void removeUpdate(DocumentEvent ev) {
-        search();
-    }
-
-    public void changedUpdate(DocumentEvent ev) {
-    }
-
+ 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem addNewOrganization;
     private javax.swing.JMenuItem deleteOrganization;

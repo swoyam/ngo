@@ -16,13 +16,15 @@ import javax.swing.*;
 
 public class AutoSuggest extends JPanel {
 
-    private final JTextField tf;
     private final JComboBox combo = new JComboBox();
+    private final JTextField tf;
     private final Vector<String> v = new Vector<String>();
+    private boolean hide_flag = false;
 
     public AutoSuggest() {
         super(new BorderLayout());
         combo.setEditable(true);
+        
         tf = (JTextField) combo.getEditor().getEditorComponent();
         tf.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
@@ -91,7 +93,7 @@ public class AutoSuggest extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(300, 150));
     }
-    private boolean hide_flag = false;
+    
 
     private void setModel(DefaultComboBoxModel mdl, String str) {
         combo.setModel(mdl);
