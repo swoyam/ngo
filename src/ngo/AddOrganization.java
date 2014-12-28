@@ -469,6 +469,7 @@ public class AddOrganization extends javax.swing.JFrame {
         this.sectorComboBox.setEnabled(false);
         this.isAdd = false;
         this.org_id = Integer.parseInt(valueMap.get("office_id").toString());
+        setTitle("Update Organization Details");
     }
 
     public class Item {
