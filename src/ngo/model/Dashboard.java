@@ -130,7 +130,7 @@ public class Dashboard {
             c.setAutoCommit(false);
             stmt = c.createStatement();
 
-            String sql = "select * from organization o where o.office_id='" + office_id + "'";
+            String sql = "SELECT * FROM organization LEFT JOIN sector ON organization.sector_sector_id = sector.sector_id where office_id='" + office_id + "';";
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 valueMap.put("officeName", rs.getString("office_name"));
@@ -142,6 +142,7 @@ public class Dashboard {
                 valueMap.put("chair_person", rs.getString("chair_person"));
                 valueMap.put("head_of_org", rs.getString("head_of_org"));
                 valueMap.put("office_id", rs.getString("office_id"));
+                valueMap.put("sector_name", rs.getString("sector_name"));
             }
             rs.close();
             stmt.close();

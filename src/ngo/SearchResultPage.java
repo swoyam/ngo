@@ -18,18 +18,17 @@ public class SearchResultPage extends javax.swing.JFrame {
      * Creates new form SearchResultPage
      */
     public SearchResultPage() {
-        
-        initComponents();
-        setLocationRelativeTo(null);
+        this("");
     }
 
     public SearchResultPage(final String keyword) {
         initComponents();
         setLocationRelativeTo(null);
         searchKeyLabel.setText("Search Result for '" + keyword + "' are follows.");
-        
+        System.out.println(new Dashboard().getMatchingOrganizations(keyword));
         resultList.setModel(new javax.swing.AbstractListModel() {
             Vector<String> result = new Dashboard().getMatchingOrganizations(keyword);
+            
             String[] strings = result.toArray(new String[result.size()]);
                     
             public int getSize() { return strings.length; }
@@ -74,12 +73,10 @@ public class SearchResultPage extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(298, 298, 298)
-                .addComponent(searchKeyLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(searchKeyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -87,9 +84,9 @@ public class SearchResultPage extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(searchKeyLabel)
-                .addGap(29, 29, 29)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(23, 23, 23))
         );
 
         title.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
@@ -154,7 +151,7 @@ public class SearchResultPage extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+                .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())

@@ -21,6 +21,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import ngo.model.Dashboard;
+import ngo.search.TextPrompt;
 
 /**
  *
@@ -43,6 +44,8 @@ public class HomePage extends javax.swing.JFrame {
         jTree1.setRootVisible(false);
         jTree1.setModel(getTreeModel(new Dashboard().getSectorWiseOrganizations()));
 
+        new TextPrompt("Search...", (JTextField) searchBox.getEditor().getEditorComponent());
+        
         MouseListener ml = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -50,10 +53,9 @@ public class HomePage extends javax.swing.JFrame {
                 MyDefaultTreeNode selectedNode = (MyDefaultTreeNode) jTree1.getLastSelectedPathComponent();
                 if (selRow != -1) {
                     if (e.getClickCount() == 2 && selectedNode.isLeaf()) {
-                        searchMessage.setText(selectedNode.toString());
-                        ViewOrganization viewOrganization = new ViewOrganization();
-                        viewOrganization.setVisible(true);
-                        viewOrganization.setValues(new Dashboard().getOrganization(selectedNode.userId));
+                        OrganizationDetails orgDetails = new OrganizationDetails(selectedNode.userId);
+                        orgDetails.setVisible(true);
+                        
                     }
                 }
             }

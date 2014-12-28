@@ -31,6 +31,8 @@ public class AddOrganization extends javax.swing.JFrame {
      */
     public AddOrganization() {
         initComponents();
+        setLocationRelativeTo(null);
+
         sectorComboBox.setModel(getModelForSectorComboBox(new Dashboard().getSectors()));
     }
 
@@ -340,7 +342,6 @@ public class AddOrganization extends javax.swing.JFrame {
 //        values.add(hodTxtField.getText());
 //        values.add(sectorId);
 //        if(!isAdd) values.add(this.org_id);
-        
         LinkedHashMap<String, Object> values = new LinkedHashMap<>();
         values.put("office_name", orgNameTxtField.getText());
         values.put("address", addressTxtField.getText());
@@ -377,7 +378,7 @@ public class AddOrganization extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null,
                         "Error! Operation Failed"
-                        );
+                );
             }
         }
 
@@ -466,7 +467,7 @@ public class AddOrganization extends javax.swing.JFrame {
         this.chairPersonTxtField.setText(valueMap.get("chair_person").toString());
         this.hodTxtField.setText(valueMap.get("head_of_org").toString());
         this.addOrganizationButton.setText("update");
-        this.sectorComboBox.setEnabled(false);
+        this.sectorComboBox.setEnabled(true);
         this.isAdd = false;
         this.org_id = Integer.parseInt(valueMap.get("office_id").toString());
     }
