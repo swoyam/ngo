@@ -9,15 +9,18 @@ import java.awt.EventQueue;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Collections;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import ngo.model.Dashboard;
-import ngo.search.TextPrompt;
 
 /**
  *
@@ -40,7 +43,22 @@ public class HomePage extends javax.swing.JFrame {
         jTree1.setRootVisible(false);
         jTree1.setModel(getTreeModel(new Dashboard().getSectorWiseOrganizations()));
 
-        new TextPrompt("Search...", (JTextField) searchBox.getEditor().getEditorComponent());
+        MouseListener ml = new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int selRow = jTree1.getRowForLocation(e.getX(), e.getY());
+                MyDefaultTreeNode selectedNode = (MyDefaultTreeNode) jTree1.getLastSelectedPathComponent();
+                if (selRow != -1) {
+                    if (e.getClickCount() == 2 && selectedNode.isLeaf()) {
+                        searchMessage.setText(selectedNode.toString());
+                        ViewOrganization viewOrganization = new ViewOrganization();
+                        viewOrganization.setVisible(true);
+                        viewOrganization.setValues(new Dashboard().getOrganization(selectedNode.userId));
+                    }
+                }
+            }
+        };
+        jTree1.addMouseListener(ml);
 
         searchBoxTextField = (JTextField) searchBox.getEditor().getEditorComponent();
         searchBoxTextField.addKeyListener(new KeyAdapter() {
@@ -96,6 +114,29 @@ public class HomePage extends javax.swing.JFrame {
         });
 
         //setModel(new DefaultComboBoxModel(defaultMessage), "");
+    }
+
+    private class MyDefaultTreeNode extends DefaultMutableTreeNode {
+        
+        Integer userId;
+        
+        public MyDefaultTreeNode(String userObject) {
+            this.userObject = userObject;
+        }
+
+        public MyDefaultTreeNode(Integer userId, String userObject) {
+            this.userId = userId;
+            this.userObject = userObject;
+        }
+
+        @Override
+        public String toString() {
+            if (userObject == null) {
+                return "";
+            } else {
+                return userObject.toString();
+            }
+        }
 
     }
 
@@ -209,6 +250,11 @@ public class HomePage extends javax.swing.JFrame {
 
         deleteOrganization.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
         deleteOrganization.setText("Delete");
+        deleteOrganization.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteOrganizationActionPerformed(evt);
+            }
+        });
         jMenu2.add(deleteOrganization);
 
         jMenuBar1.add(jMenu2);
@@ -278,6 +324,10 @@ public class HomePage extends javax.swing.JFrame {
 
     }//GEN-LAST:event_searchBoxActionPerformed
 
+    private void deleteOrganizationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteOrganizationActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteOrganizationActionPerformed
+
     private void refreshJTree() {
         jTree1.setModel(getTreeModel(new Dashboard().getSectorWiseOrganizations()));
         jTree1.repaint();
@@ -323,14 +373,14 @@ public class HomePage extends javax.swing.JFrame {
 
     public TreeModel getTreeModel(TreeMap<String, TreeMap<Integer, String>> inputMap) {
 
-        javax.swing.tree.DefaultMutableTreeNode treeNodeRoot = new javax.swing.tree.DefaultMutableTreeNode("root");
+        MyDefaultTreeNode treeNodeRoot = new MyDefaultTreeNode("root");
 
         for (Map.Entry<String, TreeMap<Integer, String>> firstLevelEntry : inputMap.entrySet()) {
 
-            javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode(firstLevelEntry.getKey());
+            MyDefaultTreeNode treeNode1 = new MyDefaultTreeNode(firstLevelEntry.getKey());
 
             for (Map.Entry<Integer, String> secondLevelEntry : firstLevelEntry.getValue().entrySet()) {
-                javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode(secondLevelEntry.getValue());
+                MyDefaultTreeNode treeNode2 = new MyDefaultTreeNode(secondLevelEntry.getKey(), secondLevelEntry.getValue());
                 treeNode1.add(treeNode2);
             }
 
@@ -341,7 +391,7 @@ public class HomePage extends javax.swing.JFrame {
 
     }
 
- 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem addNewOrganization;
     private javax.swing.JMenuItem deleteOrganization;

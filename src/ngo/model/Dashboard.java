@@ -8,9 +8,12 @@ package ngo.model;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 import ngo.dbConnect.SqliteJDBC;
+import static ngo.dbConnect.SqliteJDBC.getSqliteConnection;
 
 /**
  *
@@ -20,9 +23,8 @@ public class Dashboard {
 
     public TreeMap getSectors() {
 
-
         SqliteJDBC sqliteJDBC = new SqliteJDBC();
-        TreeMap<Integer, String> result = new TreeMap<Integer, String>();
+        TreeMap<Integer, String> result = new TreeMap<>();
 
         Statement stmt = null;
         try {
@@ -56,7 +58,7 @@ public class Dashboard {
 
         SqliteJDBC sqliteJDBC = new SqliteJDBC();
 
-        TreeMap<String, TreeMap<Integer, String>> result = new TreeMap<String, TreeMap<Integer, String>>();
+        TreeMap<String, TreeMap<Integer, String>> result = new TreeMap<>();
         Statement stmt = null;
         try {
             Connection c = sqliteJDBC.getSqliteConnection();
@@ -87,7 +89,7 @@ public class Dashboard {
         System.out.println("Operation completed successfully");
         return result;
     }
-    
+
     public Vector<String> getMatchingOrganizations(String queryWord) {
 
         SqliteJDBC sqliteJDBC = new SqliteJDBC();
@@ -118,5 +120,37 @@ public class Dashboard {
         }
         System.out.println("Operation completed successfully");
         return resultVector;
+    }
+
+    public Map<String, Object> getOrganization(Object office_id) {
+        Statement stmt = null;
+        Map<String, Object> valueMap = new HashMap<String, Object>();
+        try {
+            Connection c = getSqliteConnection();
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+
+            String sql = "select * from organization o where o.office_id='" + office_id + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                valueMap.put("officeName", rs.getString("office_name"));
+                valueMap.put("website", rs.getString("website"));
+                valueMap.put("email", rs.getString("email"));
+                valueMap.put("address", rs.getString("address"));
+                valueMap.put("telephone_no", rs.getString("telephone_no"));
+                valueMap.put("mobile_number", rs.getString("mobile_number"));
+                valueMap.put("chair_person", rs.getString("chair_person"));
+                valueMap.put("head_of_org", rs.getString("head_of_org"));
+                valueMap.put("office_id", rs.getString("office_id"));
+            }
+            rs.close();
+            stmt.close();
+            c.commit();
+            c.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return new HashMap<String, Object>();
+        }
+        return valueMap;
     }
 }

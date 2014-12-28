@@ -6,6 +6,7 @@
 package ngo;
 
 import java.awt.Color;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -21,6 +22,9 @@ import ngo.model.Dashboard;
  * @author swoyambhu
  */
 public class AddOrganization extends javax.swing.JFrame {
+
+    private boolean isAdd = true;
+    private Integer org_id = null;
 
     /**
      * Creates new form AddOrganization
@@ -93,6 +97,12 @@ public class AddOrganization extends javax.swing.JFrame {
         chairPersonLabel.setText("Chair Person");
 
         hodLabel.setText("Head of Organization");
+
+        orgNameTxtField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                orgNameTxtFieldActionPerformed(evt);
+            }
+        });
 
         telephoneNoLabel.setText("Telephone Number");
 
@@ -194,8 +204,8 @@ public class AddOrganization extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(resetButton)
-                .addGap(27, 27, 27)
-                .addComponent(addOrganizationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(addOrganizationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35))
         );
         jPanel1Layout.setVerticalGroup(
@@ -290,7 +300,7 @@ public class AddOrganization extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeMenuActionPerformed
-       this.dispose();
+        this.dispose();
     }//GEN-LAST:event_closeMenuActionPerformed
 
     private void sectorComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorComboBoxActionPerformed
@@ -319,32 +329,64 @@ public class AddOrganization extends javax.swing.JFrame {
 
         String sectorId = Integer.toString(((Item) sectorComboBox.getSelectedItem()).getId());
 
-        LinkedList<String> values = new LinkedList<String>();
-        values.add(orgNameTxtField.getText());
-        values.add(addressTxtField.getText());
-        values.add(websiteTextField.getText());
-        values.add(emailTextField.getText());
-        values.add(telephoneTxtField.getText());
-        values.add(mobileTxtField.getText());
-        values.add(chairPersonTxtField.getText());
-        values.add(hodTxtField.getText());
-        values.add(sectorId);
-
-        if(new SqliteJDBC().insertIntoOrganization(values)){
-            JOptionPane.showMessageDialog(this,
-                    "Organization Added Successfully",
-                    "Success",
-                    JOptionPane.INFORMATION_MESSAGE);
-            
-        } else{
-            JOptionPane.showMessageDialog(this,
-                    "Error! Organization Not Added",
-                    "Error",
-                    JOptionPane.ERROR);
-        }
+//        LinkedList<Object> values = new LinkedList<Object>();
+//        values.add(orgNameTxtField.getText());
+//        values.add(addressTxtField.getText());
+//        values.add(websiteTextField.getText());
+//        values.add(emailTextField.getText());
+//        values.add(telephoneTxtField.getText());
+//        values.add(mobileTxtField.getText());
+//        values.add(chairPersonTxtField.getText());
+//        values.add(hodTxtField.getText());
+//        values.add(sectorId);
+//        if(!isAdd) values.add(this.org_id);
         
+        LinkedHashMap<String, Object> values = new LinkedHashMap<>();
+        values.put("office_name", orgNameTxtField.getText());
+        values.put("address", addressTxtField.getText());
+        values.put("website", websiteTextField.getText());
+        values.put("email", emailTextField.getText());
+        values.put("telephone_no", telephoneTxtField.getText());
+        values.put("mobile_number", mobileTxtField.getText());
+        values.put("chair_person", chairPersonTxtField.getText());
+        values.put("head_of_org", hodTxtField.getText());
+        values.put("sector_sector_id", sectorId);
+
+        if (!isAdd) {
+            values.put("office_id", this.org_id);
+        }
+
+        if (isAdd) {
+            if (new SqliteJDBC().insertIntoOrganization(values)) {
+                JOptionPane.showMessageDialog(this,
+                        "Organization Added Successfully",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Error! Operation Failed",
+                        "Error",
+                        JOptionPane.ERROR);
+            }
+        } else {
+            if (new SqliteJDBC().updateOrganization(values)) {
+                JOptionPane.showMessageDialog(this,
+                        "Organization updated Successfully",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Error! Operation Failed"
+                        );
+            }
+        }
+
 
     }//GEN-LAST:event_addOrganizationButtonActionPerformed
+
+    private void orgNameTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orgNameTxtFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_orgNameTxtFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -414,7 +456,22 @@ public class AddOrganization extends javax.swing.JFrame {
         return true;
     }
 
-    class Item {
+    public void setValues(Map<String, Object> valueMap) {
+        System.out.println("valueMap" + valueMap);
+        this.orgNameTxtField.setText(valueMap.get("officeName").toString());
+        this.addressTxtField.setText(valueMap.get("address").toString());
+        this.websiteTextField.setText(valueMap.get("website").toString());
+        this.telephoneTxtField.setText(valueMap.get("telephone_no").toString());
+        this.mobileTxtField.setText(valueMap.get("mobile_number").toString());
+        this.chairPersonTxtField.setText(valueMap.get("chair_person").toString());
+        this.hodTxtField.setText(valueMap.get("head_of_org").toString());
+        this.addOrganizationButton.setText("update");
+        this.sectorComboBox.setEnabled(false);
+        this.isAdd = false;
+        this.org_id = Integer.parseInt(valueMap.get("office_id").toString());
+    }
+
+    public class Item {
 
         private int id;
         private String description;
