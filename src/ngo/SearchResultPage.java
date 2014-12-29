@@ -5,7 +5,13 @@
  */
 package ngo;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Vector;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.ListModel;
 import ngo.model.Dashboard;
 
 /**
@@ -23,20 +29,27 @@ public class SearchResultPage extends javax.swing.JFrame {
 
     public SearchResultPage(final String keyword) {
         initComponents();
+        GeneralUtils.setUILookAndFeel(this);
         setLocationRelativeTo(null);
         searchKeyLabel.setText("Search Result for '" + keyword + "' are follows.");
-        System.out.println(new Dashboard().getMatchingOrganizations(keyword));
-        resultList.setModel(new javax.swing.AbstractListModel() {
-            Vector<String> result = new Dashboard().getMatchingOrganizations(keyword);
-            
-            String[] strings = result.toArray(new String[result.size()]);
-                    
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        
-        
-        
+        System.out.println(new Dashboard().getMatchingOrganizationsIdName(keyword));
+        resultList.setModel(getListModel(new Dashboard().getMatchingOrganizationsIdName(keyword)));
+
+        MouseListener mouseListener = new MouseAdapter() {
+            public void mouseClicked(MouseEvent mouseEvent) {
+                JList theList = (JList) mouseEvent.getSource();
+                if (mouseEvent.getClickCount() == 2) {
+                    int index = theList.locationToIndex(mouseEvent.getPoint());
+                    if (index >= 0) {
+                        Object o = theList.getModel().getElementAt(index);
+                        
+                        System.out.println("Double-clicked on: " + o.toString());
+                    }
+                }
+            }
+        };
+        resultList.addMouseListener(mouseListener);
+
     }
 
     /**
@@ -170,35 +183,21 @@ public class SearchResultPage extends javax.swing.JFrame {
     }//GEN-LAST:event_addNewOrganizationActionPerformed
 
     private void editOrganizationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOrganizationActionPerformed
-        
+
     }//GEN-LAST:event_editOrganizationActionPerformed
+
+    private ListModel getListModel(Vector<Item> matchingOrganizations) {
+        DefaultListModel<Item> listModel = new DefaultListModel<Item>();
+            for(Item item : matchingOrganizations){
+                listModel.addElement(item);
+            }
+        return listModel;
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("GTK+".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SearchResultPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SearchResultPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SearchResultPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SearchResultPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

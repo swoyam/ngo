@@ -34,7 +34,7 @@ public class EditOrganization extends javax.swing.JFrame {
     public ComboBoxModel getModelForSectorComboBox(TreeMap<Integer, String> inputMap) {
         Vector vector = new Vector();
         for (Map.Entry<Integer, String> entry : inputMap.entrySet()) {
-            vector.add(new EditOrganization.Item(entry.getKey(), entry.getValue()));
+            vector.add(new Item(entry.getKey(), entry.getValue()));
         }
         return new javax.swing.DefaultComboBoxModel(vector);
     }
@@ -58,30 +58,6 @@ public class EditOrganization extends javax.swing.JFrame {
         this.hodTxtField.setEditable(false);
         this.sectorComboBox.setEditable(true);
         this.office_id = Integer.parseInt(valueMap.get("office_id").toString());
-    }
-
-    public class Item {
-
-        private int id;
-        private String description;
-
-        public Item(int id, String description) {
-            this.id = id;
-            this.description = description;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public String toString() {
-            return description;
-        }
-
     }
 
     /**

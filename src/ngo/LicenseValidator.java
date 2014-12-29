@@ -103,13 +103,15 @@ public class LicenseValidator {
         //for each entry in db.
         //todo get dates from db
         long fromDate = getDateInMillis("2001-01-01");
-        long toDate = getDateInMillis("205-01-01");
+        long toDate = getDateInMillis("2019-01-01");
         String username = "username";
-        String periodFromDb = "PERPETUAL";
+        String periodFromDb = "MONTHLY";
         ValidityPeriod period = ValidityPeriod.valueOf(periodFromDb);
         
         long currentDate = new Date().getTime();
-        
+        System.out.println("currentDate = " + new DateTime(currentDate).toString("yyyy-MM-dd"));
+        System.out.println("fromDate = " + new DateTime(fromDate).toString("yyyy-MM-dd"));
+        System.out.println("toDate = " + new DateTime(toDate).toString("yyyy-MM-dd"));
         if(false){ // no data in db
             return new Message(false, LicenseValidationError.DOES_NOT_EXIST.getMessage());
 
@@ -124,7 +126,7 @@ public class LicenseValidator {
 
     }
 
-    enum LicenseValidationError{
+    public enum LicenseValidationError{
         EXPIRED("License Key Expired."),DOES_NOT_EXIST("License Key Missing.");
         
         String message;

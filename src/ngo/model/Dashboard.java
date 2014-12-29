@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
+import ngo.Item;
 import ngo.dbConnect.SqliteJDBC;
 import static ngo.dbConnect.SqliteJDBC.getSqliteConnection;
 
@@ -122,6 +123,40 @@ public class Dashboard {
         return resultVector;
     }
 
+    
+    public Vector<Item> getMatchingOrganizationsIdName(String queryWord) {
+
+        SqliteJDBC sqliteJDBC = new SqliteJDBC();
+
+        Vector<Item> resultVector = new Vector<Item>();
+        
+        Statement stmt = null;
+        try {
+            Connection c = sqliteJDBC.getSqliteConnection();
+            stmt = c.createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT organization.office_id, organization.office_name FROM organization WHERE office_name LIKE '%"+queryWord+"%'");
+            while (rs.next()) {
+
+                Integer officeId = rs.getInt("office_id");
+                String officeName = rs.getString("office_name");
+
+                resultVector.add(new Item(officeId, officeName));
+            }
+
+            rs.close();
+            stmt.close();
+            c.close();
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        System.out.println("Operation completed successfully");
+        return resultVector;
+    }
+    
+    
     public Map<String, Object> getOrganization(Object office_id) {
         Statement stmt = null;
         Map<String, Object> valueMap = new HashMap<String, Object>();
