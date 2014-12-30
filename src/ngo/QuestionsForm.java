@@ -22,7 +22,8 @@ public class QuestionsForm extends javax.swing.JFrame {
      */
     public QuestionsForm() {
         initComponents();
-        
+        setLocationRelativeTo(null);
+        setResizable(false);
         GeneralUtils.setUILookAndFeel(this);
     }
 
@@ -69,15 +70,31 @@ public class QuestionsForm extends javax.swing.JFrame {
         //code to add dynamic labels
         String[] questionArray = {
             "1. I have something to say, it's beter to burn out then to fade away. "
-            + "This is a very long String to see if you can wrap with in "
-            + "the available spaceI have something to say, it's beter to burn out then to fade away."
-            + " This is a very long String to see if you can wrap with in",
+           ,
             "2. I have something to say, it's beter to burn out then to fade away. "
             + "This is a very long String to see if you can wrap with in "
             + "the available spaceI have something to say, it's beter to burn out then to fade away."
-            + " This is a very long String to see if you can wrap with in",
+            ,
             "3. I have something to say, it's beter to burn out then to fade away. "
+          
+                  + "This is a very long String to see if you can wrap with in "
+            + "the available spaceI have something to say, it's beter to burn out then to fade away."  + "This is a very long String to see if you can wrap with in "
+            + "the available spaceI have something to say, it's beter to burn out then to fade away."
+            + " This is a very long String to see if you can wrap with in",
+            "4. I have something to say, it's beter to burn out then to fade away. "
             + "This is a very long String to see if you can wrap with in "
+            + "the available spaceI have something to say, it's beter to burn out then to fade away."
+            + " This is a very long String to see if you can wrap with in",
+            "5. I have something to say, it's beter to burn out then to fade away. ", "1. I have something to say, it's beter to burn out then to fade away. "
+           ,
+            "2. I have something to say, it's beter to burn out then to fade away. "
+            + "This is a very long String to see if you can wrap with in "
+            + "the available spaceI have something to say, it's beter to burn out then to fade away."
+            ,
+            "3. I have something to say, it's beter to burn out then to fade away. "
+          
+                  + "This is a very long String to see if you can wrap with in "
+            + "the available spaceI have something to say, it's beter to burn out then to fade away."  + "This is a very long String to see if you can wrap with in "
             + "the available spaceI have something to say, it's beter to burn out then to fade away."
             + " This is a very long String to see if you can wrap with in",
             "4. I have something to say, it's beter to burn out then to fade away. "
@@ -85,9 +102,7 @@ public class QuestionsForm extends javax.swing.JFrame {
             + "the available spaceI have something to say, it's beter to burn out then to fade away."
             + " This is a very long String to see if you can wrap with in",
             "5. I have something to say, it's beter to burn out then to fade away. "
-            + "This is a very long String to see if you can wrap with in "
-            + "the available spaceI have something to say, it's beter to burn out then to fade away."
-            + " This is a very long String to see if you can wrap with in"};
+            };
 
         JLabel[] labelArray = new JLabel[questionArray.length];
         JEditorPane[] editorPaneArray = new JEditorPane[questionArray.length];
@@ -99,8 +114,8 @@ public class QuestionsForm extends javax.swing.JFrame {
         setViewPortForScrollPane(scrollPaneArray, editorPaneArray);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-//        jPanel1Layout.setAutoCreateContainerGaps(true);
-//        jPanel1Layout.setAutoCreateGaps(true);
+        jPanel1Layout.setAutoCreateContainerGaps(true);
+        jPanel1Layout.setAutoCreateGaps(true);
 
         jPanel1.setLayout(jPanel1Layout);
         GroupLayout.ParallelGroup horizontalGroupForJPanel = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false);
@@ -126,7 +141,7 @@ public class QuestionsForm extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jButton1)
                                 .addComponent(jButton2))
-                        .addContainerGap(292, Short.MAX_VALUE))
+                        .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(jPanel1);
@@ -150,16 +165,16 @@ public class QuestionsForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
                 .addGap(3, 3, 3))
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(title)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, Short.MAX_VALUE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -223,9 +238,9 @@ public class QuestionsForm extends javax.swing.JFrame {
     private void populateGroups(GroupLayout.ParallelGroup group, JLabel[] labelArray, JScrollPane[] scrollPaneArray, JSeparator[] seperatorArray) {
         for (int i = 0; i < labelArray.length; i++) {
 
-            group.addComponent(labelArray[i], javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE);
-            group.addComponent(scrollPaneArray[i], javax.swing.GroupLayout.DEFAULT_SIZE, 765, Short.MAX_VALUE);
-            group.addComponent(seperatorArray[i]);
+            group.addComponent(labelArray[i], javax.swing.GroupLayout.PREFERRED_SIZE, 800, Short.MAX_VALUE);
+            group.addComponent(scrollPaneArray[i], javax.swing.GroupLayout.PREFERRED_SIZE, 800, Short.MAX_VALUE);
+            group.addComponent(seperatorArray[i], javax.swing.GroupLayout.PREFERRED_SIZE, 800, Short.MAX_VALUE);
 //            group.addComponent(labelArray[i],  javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
 //            group.addComponent(textAreaArray[i], javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
         }
@@ -235,9 +250,9 @@ public class QuestionsForm extends javax.swing.JFrame {
     private void populateGroupsVertical(GroupLayout.SequentialGroup group, JLabel[] labelArray, JScrollPane[] scrollPaneArray, JSeparator[] seperatorArray) {
 
         for (int i = 0; i < labelArray.length; i++) {
-            group.addComponent(labelArray[i], javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+            group.addComponent(labelArray[i], javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
-            group.addComponent(scrollPaneArray[i], javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+            group.addComponent(scrollPaneArray[i], javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
             group.addComponent(seperatorArray[i], javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
