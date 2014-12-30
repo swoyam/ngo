@@ -4,11 +4,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ngo.model.Users;
 import org.joda.time.DateTime;
+import sun.security.x509.X500Name;
 
 /**
  *
@@ -18,14 +21,6 @@ public class LicenseValidator {
 
     private final static String SPECIAL_KEY = "swoyam^*~2014";
     private static final String HASH_ALGORITHM = "SHA-1";
-
-    private static boolean insertLicenseToDb() {
-        return true;
-    }
-
-    private static boolean updateLicenseInDb() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     public enum ValidityPeriod {
 
@@ -56,23 +51,21 @@ public class LicenseValidator {
         System.out.println("perpetual");
         System.out.println(generateLicenseKey(userName, ValidityPeriod.PERPETUAL));
 
-        System.out.println(addLicenseKey(userName, generateLicenseKey(userName, ValidityPeriod.MONTHLY)));
-        System.out.println(addLicenseKey(userName, generateLicenseKey(userName, ValidityPeriod.YEARLY)));
-        System.out.println(addLicenseKey(userName, generateLicenseKey(userName, ValidityPeriod.PERPETUAL)));
-        System.out.println(addLicenseKey(userName, "651290451032cba256b17ddad927c8808cf694ef"));
-
     }
 
-    public static Message addLicenseKey(String username, String key) {
+    public Message addLicenseKey(String username, String key) {
 
         Valididy validtyOfLicenseKey = getValidity(username, key);
 
         if (!validtyOfLicenseKey.getPeriod().equals(ValidityPeriod.INVALID)) {
-            if (insertLicenseToDb()) {
+            Message insertLicenseMessage = insertLicenseToDb(username, key);
+            if (insertLicenseMessage.getStatus()) {
                 String message = "License Key Registered to " + username + "."
                         + "\nLicense Type: " + validtyOfLicenseKey.getPeriod().name() + "."
                         + "\nValid from " + validtyOfLicenseKey.getFromDateString() + " to " + validtyOfLicenseKey.getToDateString() + ".";
                 return new Message(true, message);
+            } else {
+                return insertLicenseMessage;
             }
         }
 
@@ -80,72 +73,73 @@ public class LicenseValidator {
 
     }
 
-    public static Message updateLicenseKey(String username, String key) {
+    private Message insertLicenseToDb(String username, String licenseKey) {
+        Users userInfo = new Users();
+        userInfo.setUserName(username);
+        userInfo.setLicenseKey(licenseKey);
 
-        Valididy validtyOfLicenseKey = getValidity(username, key);
+        Valididy validityObj = getValidity(username, licenseKey);
 
-        if (!validtyOfLicenseKey.getPeriod().equals(ValidityPeriod.INVALID)) {
-            if (updateLicenseInDb()) {
-                String message = "License Key Updated."
-                        + "\nLicense Key Registered to " + username + "."
-                        + "\nLicense Type: " + validtyOfLicenseKey.getPeriod().name() + "."
-                        + "\nValid from " + validtyOfLicenseKey.getFromDateString() + " to " + validtyOfLicenseKey.getToDateString() + ".";
-                return new Message(true, message);
-            }
-        }
+        userInfo.setLicenseType(validityObj.getPeriod());
+        userInfo.setStartDate(validityObj.getFromDate());
+        userInfo.setEndDate(validityObj.getToDate());
 
-        return new Message(false, "License Key Invalid.");
-
+        Message message = userInfo.insertLicense();
+        
+        return message;
     }
 
     public Message hasValidLicense() {
 
-        //for each entry in db.
-        //todo get dates from db
-        long fromDate = getDateInMillis("2001-01-01");
-        long toDate = getDateInMillis("2019-01-01");
-        String username = "username";
-        String periodFromDb = "MONTHLY";
-        ValidityPeriod period = ValidityPeriod.valueOf(periodFromDb);
+        ArrayList<Users> userInfoList = new Users().getLicenseInfo();
+        System.out.println("userInfoList = " + userInfoList);
         
-        long currentDate = new Date().getTime();
-        System.out.println("currentDate = " + new DateTime(currentDate).toString("yyyy-MM-dd"));
-        System.out.println("fromDate = " + new DateTime(fromDate).toString("yyyy-MM-dd"));
-        System.out.println("toDate = " + new DateTime(toDate).toString("yyyy-MM-dd"));
-        if(false){ // no data in db
+        if (userInfoList == null || userInfoList.size() == 0) {
             return new Message(false, LicenseValidationError.DOES_NOT_EXIST.getMessage());
-
-        }
-        
-        if ((ValidityPeriod.PERPETUAL.equals(period)) 
-                ||  ( currentDate >= fromDate && currentDate <= toDate)) {
-            return new Message(true, "License Key Registered to "+ username );
         } else {
-            return new Message(false, LicenseValidationError.EXPIRED.getMessage());
-        }
+            for (Users userInfo : userInfoList) {
 
+                long fromDate = userInfo.getStartDate();
+                long toDate = userInfo.getEndDate();
+                String username = userInfo.getUserName();
+                ValidityPeriod period = userInfo.getLicenseType();
+
+                long currentDate = new Date().getTime();
+                System.out.println("currentDate = " + new DateTime(currentDate).toString("yyyy-MM-dd"));
+                System.out.println("fromDate = " + new DateTime(fromDate).toString("yyyy-MM-dd"));
+                System.out.println("toDate = " + new DateTime(toDate).toString("yyyy-MM-dd"));
+
+                if ((ValidityPeriod.PERPETUAL.equals(period))
+                        || (currentDate >= fromDate && currentDate <= toDate)) {
+                    return new Message(true, "License Key Registered to " + username);
+                } else {
+                    return new Message(false, LicenseValidationError.EXPIRED.getMessage());
+                }
+            }
+        }
+        return new Message(false, "Oops Something went wrong!");
     }
 
-    public enum LicenseValidationError{
-        EXPIRED("License Key Expired."),DOES_NOT_EXIST("License Key Missing.");
-        
+    public enum LicenseValidationError {
+
+        EXPIRED("License Key Expired."), DOES_NOT_EXIST("License Key Missing.");
+
         String message;
-        
-        LicenseValidationError(String message){
+
+        LicenseValidationError(String message) {
             this.message = message;
         }
-        
-        public String getMessage(){
+
+        public String getMessage() {
             return message;
         }
-    
+
     }
-    
-    
+
     private static Valididy getValidity(String username, String key) {
 
         ValidityPeriod period = getValidityPeriod(username, key);
-        long currentDate = new Date().getTime();
+        long currentDate = new DateTime().getMillis();
         long toDate = new DateTime(currentDate).plusDays(period.getDays()).getMillis();
         Valididy validityObject = new Valididy(period, currentDate, toDate);
 

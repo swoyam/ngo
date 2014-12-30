@@ -5,12 +5,7 @@
  */
 package ngo;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.JOptionPane;
 import ngo.search.TextPrompt;
 
 /**
@@ -18,6 +13,8 @@ import ngo.search.TextPrompt;
  * @author swoyambhu
  */
 public class LicenseValidation extends javax.swing.JFrame {
+
+    String message;
 
     public LicenseValidation() {
         this("");
@@ -28,11 +25,13 @@ public class LicenseValidation extends javax.swing.JFrame {
      */
     public LicenseValidation(String message) {
 
+        this.message = message;
+
         initComponents();
 
         GeneralUtils.setUILookAndFeel(this);
 
-        licenseLabel.setText(message);
+        licenseLabel.setText(this.message);
         setLocationRelativeTo(null);
         new TextPrompt("User Name", userNameTextField);
     }
@@ -74,6 +73,11 @@ public class LicenseValidation extends javax.swing.JFrame {
         });
 
         validateButton.setText("Validate");
+        validateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                validateButtonActionPerformed(evt);
+            }
+        });
 
         jScrollPane1.setViewportView(licenseKeyEditorPane);
 
@@ -148,23 +152,32 @@ public class LicenseValidation extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_userNameTextFieldActionPerformed
 
+    private void validateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_validateButtonActionPerformed
+        String userName = userNameTextField.getText().trim();
+        String licenseKey = licenseKeyEditorPane.getText().trim();
+        Message message = new LicenseValidator().addLicenseKey(userName, licenseKey);
+        if (message.getStatus()) {
+            JOptionPane.showMessageDialog(this,
+                    message.getMessage(),
+                    "Message",
+                    JOptionPane.INFORMATION_MESSAGE);
+            String messageForHomePage = message.getMessage().substring(0, message.getMessage().indexOf("\n"));
+            HomePage page = new HomePage(messageForHomePage);
+            page.setVisible(true);
+            this.dispose();
+
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    message.getMessage(),
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_validateButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-
-        try {
-            UIManager.setLookAndFeel(UIManager
-                    .getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(LicenseValidation.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(LicenseValidation.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(LicenseValidation.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(LicenseValidation.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -186,5 +199,4 @@ public class LicenseValidation extends javax.swing.JFrame {
     private javax.swing.JButton validateButton;
     // End of variables declaration//GEN-END:variables
 
-    
 }

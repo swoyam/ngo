@@ -1,10 +1,10 @@
 package ngo;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import java.io.File;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import ngo.dbConnect.SqliteJDBC;
+
 /**
  *
  * @author swshrestha
@@ -13,22 +13,35 @@ public class App {
 
     public static void main(String[] args) {
 
+        init();
+
         final Message licenseValidationMessage = new LicenseValidator().hasValidLicense();
         final boolean licenseStatus = licenseValidationMessage.getStatus();
         final String message = licenseValidationMessage.getMessage();
+        System.out.println(licenseValidationMessage);
         LicenseValidation validation = new LicenseValidation(message);
-        
-        System.out.println("message" + message);
-        System.out.println(LicenseValidator.LicenseValidationError.EXPIRED.getMessage());
-        
+
         if (message.equals(LicenseValidator.LicenseValidationError.DOES_NOT_EXIST.getMessage())) {
+
+            JOptionPane.showMessageDialog(new JFrame(), message, "Warning!", JOptionPane.ERROR_MESSAGE);
             validation.setVisible(true);
         } else if (message.equals(LicenseValidator.LicenseValidationError.EXPIRED.getMessage())) {
+            JOptionPane.showMessageDialog(new JFrame(), message, "Warning!", JOptionPane.INFORMATION_MESSAGE);
             validation.setVisible(true);
-        } else {
+        } else if (licenseStatus) {
             HomePage home = new HomePage(message);
             home.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
+            throw new RuntimeException("Something went wrong during license validation.");
         }
 
+    }
+
+    private static void init() {
+        File folderName = new File("db");
+        folderName.mkdirs(); //creating db folder to store database
+        Message initDbMessage = new SqliteJDBC().initiateApplicationDatabase();
+        System.out.println(initDbMessage);
     }
 }
