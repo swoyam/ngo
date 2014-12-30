@@ -10,8 +10,10 @@
 CREATE TABLE IF NOT EXISTS "Users" (
     "user_id" integer NOT NULL  PRIMARY KEY AUTOINCREMENT,
     "username" varchar(255) NOT NULL,
-    "password" varchar(255) NOT NULL,
-    "created_date" datetime
+    "license_key" varchar(255) NOT NULL,
+    "start_date" datetime NOT NULL,
+    "end_date" datetime NOT NULL,
+    "license_type" varchar(200) NOT NULL
 );
 
 -- Table: "answers"
