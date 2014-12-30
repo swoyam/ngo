@@ -11,15 +11,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import ngo.Message;
 
 /**
  *
@@ -36,7 +32,7 @@ public class SqliteJDBC {
 //        insertIntoQuestions();
     }
 
-    public static Connection getSqliteConnection() {
+    public Connection getSqliteConnection() {
         Connection conn = null;
 
         try {
@@ -51,7 +47,7 @@ public class SqliteJDBC {
         return conn;
     }
 
-    public static void initiateApplicationDatabase() {
+    public Message initiateApplicationDatabase() {
         Statement stmt = null;
         try {
             Connection c = getSqliteConnection();
@@ -60,8 +56,10 @@ public class SqliteJDBC {
             String sql = "CREATE TABLE IF NOT EXISTS \"Users\" (\n"
                     + "    \"user_id\" integer NOT NULL  PRIMARY KEY AUTOINCREMENT,\n"
                     + "    \"username\" varchar(255) NOT NULL,\n"
-                    + "    \"password\" varchar(255) NOT NULL,\n"
-                    + "    \"created_date\" datetime\n"
+                    + "    \"license_key\" varchar(255) NOT NULL,\n"
+                    + "    \"start_date\" datetime NOT NULL,\n"
+                    + "    \"end_date\" datetime NOT NULL,\n"
+                    + "    \"license_type\" varchar(200) NOT NULL\n"
                     + ")";
             stmt.executeUpdate(sql);
 
@@ -125,10 +123,10 @@ public class SqliteJDBC {
             System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
             System.exit(0);
         }
-        System.out.println("Tables created successfully");
+        return new Message(true, "Database Created. Tables Created.");
     }
 
-    public static boolean insertTest() {
+    public boolean insertTest() {
         Statement stmt = null;
         try {
             Connection c = getSqliteConnection();
@@ -150,7 +148,7 @@ public class SqliteJDBC {
         return true;
     }
 
-    public static boolean insertTest(String sql) {
+    public boolean insertTest(String sql) {
         Statement stmt = null;
         try {
             Connection c = getSqliteConnection();
@@ -172,7 +170,7 @@ public class SqliteJDBC {
         return true;
     }
 
-    public static boolean selectTest() {
+    public boolean selectTest() {
         Statement stmt = null;
         try {
             Connection c = getSqliteConnection();
@@ -200,7 +198,7 @@ public class SqliteJDBC {
         return true;
     }
 
-    public static boolean insertIntoSector() {
+    public boolean insertIntoSector() {
         Statement stmt = null;
         try {
             Connection c = getSqliteConnection();
@@ -278,7 +276,7 @@ public class SqliteJDBC {
         return true;
     }
 
-    public static boolean insertIntoQuestionCategory() {
+    public boolean insertIntoQuestionCategory() {
         Statement stmt = null;
 
         try {
@@ -307,7 +305,7 @@ public class SqliteJDBC {
         return true;
     }
 
-    public static boolean insertIntoQuestions() {
+    public boolean insertIntoQuestions() {
         Statement stmt = null;
 
         try {
@@ -385,5 +383,7 @@ public class SqliteJDBC {
         builder.delete(builder.length() - 2, builder.length());
         return builder.toString();
     }
+    
+    
 
 }

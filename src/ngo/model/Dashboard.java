@@ -14,7 +14,6 @@ import java.util.TreeMap;
 import java.util.Vector;
 import ngo.Item;
 import ngo.dbConnect.SqliteJDBC;
-import static ngo.dbConnect.SqliteJDBC.getSqliteConnection;
 
 /**
  *
@@ -161,7 +160,7 @@ public class Dashboard {
         Statement stmt = null;
         Map<String, Object> valueMap = new HashMap<String, Object>();
         try {
-            Connection c = getSqliteConnection();
+            Connection c = new SqliteJDBC().getSqliteConnection();
             c.setAutoCommit(false);
             stmt = c.createStatement();
 
@@ -189,4 +188,6 @@ public class Dashboard {
         }
         return valueMap;
     }
+    
+    
 }
