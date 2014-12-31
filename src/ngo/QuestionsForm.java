@@ -9,6 +9,7 @@ import java.util.TreeMap;
 import javax.swing.GroupLayout;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import ngo.model.Questions;
@@ -34,12 +35,13 @@ public class QuestionsForm extends javax.swing.JFrame {
         title = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
-
+        editorPaneMap = new TreeMap<>();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         closeMenu = new javax.swing.JMenuItem();
+        saveMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Additional Questions");
@@ -86,15 +88,15 @@ public class QuestionsForm extends javax.swing.JFrame {
         for (Integer categoryId : questions.keySet()) {
             TreeMap<Integer, String> questionMap = questions.get(categoryId);
             JLabel[] labelArray = new JLabel[questionMap.size()];
-            JEditorPane[] editorPaneArray = new JEditorPane[questionMap.size()];
+            //  JEditorPane[] editorPaneArray = new JEditorPane[questionMap.size()];
             JSeparator[] seperatorArray = new JSeparator[questionMap.size()];
             JScrollPane[] scrollPaneArray = new JScrollPane[questionMap.size()];
-            populateArrays(labelArray, questionMap, editorPaneArray, seperatorArray, scrollPaneArray);
-            setViewPortForScrollPane(scrollPaneArray, editorPaneArray);
+            populateArrays(labelArray, questionMap, editorPaneMap, seperatorArray, scrollPaneArray);
+            setViewPortForScrollPane(scrollPaneArray, editorPaneMap);
             JLabel categoryLabel = new JLabel();
-            categoryLabel.setText("<html><i><strong>"+new Questions().getCategoryById(categoryId)+"</strong></i></html>");
+            categoryLabel.setText("<html><i><strong>" + new Questions().getCategoryById(categoryId) + "</strong></i></html>");
             populateGroups(categoryLabel, horizontalGroupForJPanel, labelArray, scrollPaneArray, seperatorArray);
-            populateGroupsVertical(categoryLabel,verticalGroupForJPanel, labelArray, scrollPaneArray, seperatorArray);
+            populateGroupsVertical(categoryLabel, verticalGroupForJPanel, labelArray, scrollPaneArray, seperatorArray);
 
         }
 
@@ -124,12 +126,22 @@ public class QuestionsForm extends javax.swing.JFrame {
         jMenu1.setText("File");
 
         closeMenu.setText("Close");
+        saveMenu.setText("Save");
+
         closeMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeMenuActionPerformed(evt);
             }
         });
+
+        saveMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuActionPerformed(evt);
+            }
+        });
+
         jMenu1.add(closeMenu);
+        jMenu1.add(saveMenu);
 
         jMenuBar1.add(jMenu1);
 
@@ -160,6 +172,14 @@ public class QuestionsForm extends javax.swing.JFrame {
         this.dispose();
     }
 
+    private void saveMenuActionPerformed(java.awt.event.ActionEvent evt) {
+
+        boolean insert = new Questions().insertAnswer(editorPaneMap);
+        if (insert) {
+            JOptionPane.showMessageDialog(null, "Record inserted sucessfully");
+        }
+    }
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
@@ -183,6 +203,7 @@ public class QuestionsForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify                     
     private javax.swing.JMenuItem closeMenu;
+    private javax.swing.JMenuItem saveMenu;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JMenu jMenu1;
@@ -190,13 +211,14 @@ public class QuestionsForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel title;
-    // End of variables declaration      
+    TreeMap<Integer, JEditorPane> editorPaneMap;
 
-    private void populateArrays(JLabel[] labelArray, TreeMap<Integer, String> question, JEditorPane[] textAreaArray, JSeparator[] seperatorArray, JScrollPane[] scrollPaneArray) {
+    // End of variables declaration      
+    private void populateArrays(JLabel[] labelArray, TreeMap<Integer, String> question, TreeMap<Integer, JEditorPane> editorPane, JSeparator[] seperatorArray, JScrollPane[] scrollPaneArray) {
         int j = 0;
         for (Integer i : question.keySet()) {
             labelArray[j] = new JLabel(getHtmlQuotes(question.get(i)));
-            textAreaArray[j] = new JEditorPane();
+            editorPane.put(i, new JEditorPane());
             seperatorArray[j] = new JSeparator(0);
             scrollPaneArray[j] = new JScrollPane();
             j++;
@@ -237,10 +259,18 @@ public class QuestionsForm extends javax.swing.JFrame {
 
     }
 
-    private void setViewPortForScrollPane(JScrollPane[] scrollPaneArray, JEditorPane[] editorPaneArray) {
-        for (int i = 0; i < editorPaneArray.length; i++) {
-            scrollPaneArray[i].setViewportView(editorPaneArray[i]);
+//    private void setViewPortForScrollPane(JScrollPane[] scrollPaneArray, JEditorPane[] editorPaneArray) {
+//        for (int i = 0; i < editorPaneArray.length; i++) {
+//            scrollPaneArray[i].setViewportView(editorPaneArray[i]);
+//   
+//        }
+//    }
+    static int count = 1;
 
+    private void setViewPortForScrollPane(JScrollPane[] scrollPaneArray, TreeMap<Integer, JEditorPane> editorPane) {
+        for (int i = 0; i < scrollPaneArray.length; i++) {
+            scrollPaneArray[i].setViewportView(editorPane.get(count));
+            count++;
         }
     }
 
