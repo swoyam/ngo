@@ -6,6 +6,7 @@
 package ngo;
 
 import java.util.Map;
+import javax.swing.JOptionPane;
 import ngo.model.Dashboard;
 import ngo.utils.GeneralUtils;
 
@@ -22,22 +23,20 @@ public class OrganizationDetails extends javax.swing.JFrame {
      */
     public OrganizationDetails() {
         this(-1);
-        
-       
+
         //sectorComboBox.setModel(getModelForSectorComboBox(new Dashboard().getSectors()));
     }
-    
+
     public OrganizationDetails(int officeId) {
         initComponents();
         GeneralUtils.setUILookAndFeel(this);
         setLocationRelativeTo(null);
         setResizable(false);
-        
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setValues(new Dashboard().getOrganization(officeId));
         this.office_id = officeId;
-        
-       
+
     }
 
     public void setValues(Map<String, Object> valueMap) {
@@ -50,7 +49,7 @@ public class OrganizationDetails extends javax.swing.JFrame {
         this.chairPersonTxtField.setEditable(false);
         this.hodTxtField.setEditable(false);
         this.sectorTextField.setEditable(false);
-        
+
         String officeName = valueMap.containsKey("officeName") ? valueMap.get("officeName").toString() : "";
         String address = valueMap.containsKey("address") ? valueMap.get("address").toString() : "";
         String website = valueMap.containsKey("website") ? valueMap.get("website").toString() : "";
@@ -60,10 +59,9 @@ public class OrganizationDetails extends javax.swing.JFrame {
         String chairPerson = valueMap.containsKey("chair_person") ? valueMap.get("chair_person").toString() : "";
         String headOfOrg = valueMap.containsKey("head_of_org") ? valueMap.get("head_of_org").toString() : "";
         String sectorName = valueMap.containsKey("sector_name") ? valueMap.get("sector_name").toString() : "";
-                
-        setTitle("Organization Details: "+ officeName);
-        
-        
+
+        setTitle("Organization Details: " + officeName);
+
         this.orgNameTxtField.setText(officeName);
         this.addressTxtField.setText(address);
         this.websiteTextField.setText(website);
@@ -73,8 +71,7 @@ public class OrganizationDetails extends javax.swing.JFrame {
         this.chairPersonTxtField.setText(chairPerson);
         this.hodTxtField.setText(headOfOrg);
         this.sectorTextField.setText(sectorName);
-        
-        
+
     }
 
     /**
@@ -243,7 +240,7 @@ public class OrganizationDetails extends javax.swing.JFrame {
                     .addComponent(sectorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(41, 41, 41)
                 .addComponent(asterisk2)
-                .addGap(0, 10, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jMenu1.setText("File");
@@ -273,15 +270,21 @@ public class OrganizationDetails extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
-        // TODO add your handling code here:
+        String message = "All the information for this organization will be deleted. \nAre you sure you want to delete?";
+        int answer = JOptionPane.showConfirmDialog(this, message, "Delete Organization", 0);
+        if (answer == JOptionPane.YES_OPTION) {
+            // User clicked YES.
+        } else if (answer == JOptionPane.NO_OPTION) {
+            // User clicked NO.
+        }
     }//GEN-LAST:event_DeleteActionPerformed
 
     private void UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateActionPerformed
@@ -299,7 +302,6 @@ public class OrganizationDetails extends javax.swing.JFrame {
     private void orgNameTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orgNameTxtFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_orgNameTxtFieldActionPerformed
-
 
     /**
      * @param args the command line arguments
