@@ -41,7 +41,12 @@ public class App {
     private static void init() {
         File folderName = new File("db");
         folderName.mkdirs(); //creating db folder to store database
-        Message initDbMessage = new SqliteJDBC().initiateApplicationDatabase();
+        SqliteJDBC jdbc = new SqliteJDBC();
+        
+        Message initDbMessage = jdbc.initiateApplicationDatabase();
+        //jdbc.insertIntoSector();
+        // insert sector is it does not exist only
+        
         System.out.println(initDbMessage);
     }
 }

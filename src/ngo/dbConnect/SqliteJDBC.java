@@ -123,7 +123,19 @@ public class SqliteJDBC {
             System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
             System.exit(0);
         }
-        return new Message(true, "Database Created. Tables Created.");
+
+        if (getSectorsCount() == 0) {
+            if (insertIntoSector()) {
+                return new Message(true, "Database Created. Tables Created. Sectors Initiated.");
+
+            } else {
+                return new Message(true, "Database Created. Tables Created. Sectors cannot be initiated");
+
+            }
+        } else {
+            return new Message(true, "Database Created. Tables Created. Sectors Initiated");
+        }
+
     }
 
     public boolean insertTest() {
@@ -170,21 +182,17 @@ public class SqliteJDBC {
         return true;
     }
 
-    public boolean selectTest() {
+    public int getSectorsCount() {
         Statement stmt = null;
+        int count = 0;
+
         try {
             Connection c = getSqliteConnection();
             stmt = c.createStatement();
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM sector;");
+            ResultSet rs = stmt.executeQuery("SELECT sector_id FROM sector;");
             while (rs.next()) {
-                int id = rs.getInt("sector_id");
-                String name = rs.getString("sector_name");
-                String desc = rs.getString("sector_desc");
-                System.out.println("ID = " + id);
-                System.out.println("NAME = " + name);
-                System.out.println("DESC = " + desc);
-                System.out.println();
+                count++;
             }
             rs.close();
             stmt.close();
@@ -195,7 +203,7 @@ public class SqliteJDBC {
             System.exit(0);
         }
         System.out.println("Operation completed successfully");
-        return true;
+        return count;
     }
 
     public boolean insertIntoSector() {
@@ -383,7 +391,5 @@ public class SqliteJDBC {
         builder.delete(builder.length() - 2, builder.length());
         return builder.toString();
     }
-    
-    
 
 }
