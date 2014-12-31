@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.TreeMap;
+import javax.swing.JEditorPane;
 import ngo.dbConnect.SqliteJDBC;
 
 /**
@@ -16,6 +17,7 @@ import ngo.dbConnect.SqliteJDBC;
  * @author memoshakya
  */
 public class Questions {
+
     public TreeMap<Integer, TreeMap<Integer, String>> getCategoryWiseQuestions() {
 
         SqliteJDBC sqliteJDBC = new SqliteJDBC();
@@ -50,8 +52,8 @@ public class Questions {
         System.out.println("Operation completed successfully");
         return result;
     }
-    
-     public String getCategoryById(Integer categoryId) {
+
+    public String getCategoryById(Integer categoryId) {
 
         SqliteJDBC sqliteJDBC = new SqliteJDBC();
 
@@ -61,9 +63,9 @@ public class Questions {
             Connection c = sqliteJDBC.getSqliteConnection();
             stmt = c.createStatement();
 
-            ResultSet rs = stmt.executeQuery("SELECT qc.q_category_desc FROM question_category qc where qc.q_category_id = '"+categoryId+"'");  
+            ResultSet rs = stmt.executeQuery("SELECT qc.q_category_desc FROM question_category qc where qc.q_category_id = '" + categoryId + "'");
             while (rs.next()) {
-                result= rs.getString("q_category_desc");
+                result = rs.getString("q_category_desc");
             }
             rs.close();
             stmt.close();
@@ -77,5 +79,31 @@ public class Questions {
         return result;
     }
 
+    //ToDo get organisation id from form. 
     
+    public static boolean insertAnswer(TreeMap<Integer, JEditorPane> answers) {
+
+        SqliteJDBC sqliteJDBC = new SqliteJDBC();
+        Statement stmt = null;
+        try {
+            Connection c = sqliteJDBC.getSqliteConnection();
+            c.setAutoCommit(false);
+            for (Integer qId : answers.keySet()) {
+                stmt = c.createStatement();
+                String answer = answers.get(qId).getText();
+                stmt.executeUpdate("Insert into answers ('answer','questions_q_id','organization_office_id') values " + "('" + answer + "', " + qId + ", " + 1+")");
+            }
+
+            stmt.close();
+            c.commit();
+            c.close();
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+        System.out.println("Record inserted successfully");
+        return true;
+    }
+
 }
