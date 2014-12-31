@@ -24,6 +24,8 @@ public class QuestionsForm extends javax.swing.JFrame {
      * Creates new form QuestionsTest
      */
     public QuestionsForm() {
+        answerSet = new Questions().getAnswer(1);
+
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
@@ -91,7 +93,7 @@ public class QuestionsForm extends javax.swing.JFrame {
             //  JEditorPane[] editorPaneArray = new JEditorPane[questionMap.size()];
             JSeparator[] seperatorArray = new JSeparator[questionMap.size()];
             JScrollPane[] scrollPaneArray = new JScrollPane[questionMap.size()];
-            populateArrays(labelArray, questionMap, editorPaneMap, seperatorArray, scrollPaneArray);
+            populateArrays(labelArray, questionMap, editorPaneMap, seperatorArray, scrollPaneArray, answerSet);
             setViewPortForScrollPane(scrollPaneArray, editorPaneMap);
             JLabel categoryLabel = new JLabel();
             categoryLabel.setText("<html><i><strong>" + new Questions().getCategoryById(categoryId) + "</strong></i></html>");
@@ -174,9 +176,14 @@ public class QuestionsForm extends javax.swing.JFrame {
 
     private void saveMenuActionPerformed(java.awt.event.ActionEvent evt) {
 
-        boolean insert = new Questions().insertAnswer(editorPaneMap);
+        boolean insert = answerSet.size() <= 0;
         if (insert) {
+            new Questions().insertAnswer(editorPaneMap);
             JOptionPane.showMessageDialog(null, "Record inserted sucessfully");
+        }
+        else{
+            new Questions().insertAnswer(editorPaneMap);
+            JOptionPane.showMessageDialog(null, "Record updated sucessfully");
         }
     }
 
@@ -212,13 +219,16 @@ public class QuestionsForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel title;
     TreeMap<Integer, JEditorPane> editorPaneMap;
+    TreeMap<Integer, String> answerSet;
 
     // End of variables declaration      
-    private void populateArrays(JLabel[] labelArray, TreeMap<Integer, String> question, TreeMap<Integer, JEditorPane> editorPane, JSeparator[] seperatorArray, JScrollPane[] scrollPaneArray) {
+    private void populateArrays(JLabel[] labelArray, TreeMap<Integer, String> question, TreeMap<Integer, JEditorPane> editorPane, JSeparator[] seperatorArray, JScrollPane[] scrollPaneArray, TreeMap<Integer, String> answers) {
         int j = 0;
         for (Integer i : question.keySet()) {
+            JEditorPane editorPane1 = new JEditorPane();
+            editorPane1.setText(answers.get(i));
             labelArray[j] = new JLabel(getHtmlQuotes(question.get(i)));
-            editorPane.put(i, new JEditorPane());
+            editorPane.put(i, editorPane1);
             seperatorArray[j] = new JSeparator(0);
             scrollPaneArray[j] = new JScrollPane();
             j++;

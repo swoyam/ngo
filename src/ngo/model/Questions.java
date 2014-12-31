@@ -17,6 +17,9 @@ import ngo.dbConnect.SqliteJDBC;
  * @author memoshakya
  */
 public class Questions {
+    public static void main(String[] args) {
+        getAnswer(1);
+    }
 
     public TreeMap<Integer, TreeMap<Integer, String>> getCategoryWiseQuestions() {
 
@@ -80,8 +83,7 @@ public class Questions {
     }
 
     //ToDo get organisation id from form. 
-    
-    public static boolean insertAnswer(TreeMap<Integer, JEditorPane> answers) {
+    public boolean insertAnswer(TreeMap<Integer, JEditorPane> answers) {
 
         SqliteJDBC sqliteJDBC = new SqliteJDBC();
         Statement stmt = null;
@@ -91,11 +93,12 @@ public class Questions {
             for (Integer qId : answers.keySet()) {
                 stmt = c.createStatement();
                 String answer = answers.get(qId).getText();
-                stmt.executeUpdate("Insert into answers ('answer','questions_q_id','organization_office_id') values " + "('" + answer + "', " + qId + ", " + 1+")");
+                stmt.executeUpdate("Insert into answers ('answer','questions_q_id','organization_office_id') values " + "('" + answer + "', " + qId + ", " + 1 + ")");
             }
 
             stmt.close();
             c.commit();
+            c.setAutoCommit(true);
             c.close();
 
         } catch (Exception e) {
@@ -105,5 +108,59 @@ public class Questions {
         System.out.println("Record inserted successfully");
         return true;
     }
+    
+    //ToDo get organisation id from form. 
+    public boolean updateAnswer(TreeMap<Integer, JEditorPane> answers) {
+
+        SqliteJDBC sqliteJDBC = new SqliteJDBC();
+        Statement stmt = null;
+        try {
+            Connection c = sqliteJDBC.getSqliteConnection();
+            c.setAutoCommit(false);
+            for (Integer qId : answers.keySet()) {
+                stmt = c.createStatement();
+                String answer = answers.get(qId).getText();
+                stmt.executeUpdate("update answers set 'answer' = '"+ answer+"'" +"where question_q_id="+qId+" and organization_office_id=1");
+            }
+
+            stmt.close();
+            c.commit();
+            c.setAutoCommit(true);
+            c.close();
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
+        }
+        System.out.println("Record inserted successfully");
+        return true;
+    }
+
+    public static TreeMap<Integer, String> getAnswer(Integer organizationId) {
+        TreeMap<Integer, String> result = new TreeMap<>();
+
+        SqliteJDBC sqliteJDBC = new SqliteJDBC();
+        Statement stmt = null;
+        try {
+            Connection c = sqliteJDBC.getSqliteConnection();
+            stmt=c.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT answer,questions_q_id FROM answers where organization_office_id= " + organizationId);
+            while (rs.next()) {
+
+                Integer questionId = rs.getInt("questions_q_id");
+                String answer = rs.getString("answer");
+                result.put(questionId, answer);
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        System.out.println(result);
+        return result;
+    }
+
 
 }
