@@ -5,6 +5,8 @@
  */
 package ngo;
 
+import ngo.utils.GeneralUtils;
+import ngo.utils.Item;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -31,7 +33,7 @@ public class SearchResultPage extends javax.swing.JFrame {
         initComponents();
         GeneralUtils.setUILookAndFeel(this);
         setLocationRelativeTo(null);
-        searchKeyLabel.setText("Search Result for '" + keyword + "' are follows.");
+        searchKeyLabel.setText("Search Result for '" + keyword + "' are follows. Double Click to view details.");
         System.out.println(new Dashboard().getMatchingOrganizationsIdName(keyword));
         resultList.setModel(getListModel(new Dashboard().getMatchingOrganizationsIdName(keyword)));
 
@@ -41,9 +43,10 @@ public class SearchResultPage extends javax.swing.JFrame {
                 if (mouseEvent.getClickCount() == 2) {
                     int index = theList.locationToIndex(mouseEvent.getPoint());
                     if (index >= 0) {
-                        Object o = theList.getModel().getElementAt(index);
-                        
-                        System.out.println("Double-clicked on: " + o.toString());
+                        Item item = (Item) theList.getModel().getElementAt(index);
+                        OrganizationDetails orgDetails = new OrganizationDetails(item.getId());
+                        orgDetails.setVisible(true);
+
                     }
                 }
             }
