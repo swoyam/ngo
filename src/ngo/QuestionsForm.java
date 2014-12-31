@@ -91,9 +91,10 @@ public class QuestionsForm extends javax.swing.JFrame {
             JScrollPane[] scrollPaneArray = new JScrollPane[questionMap.size()];
             populateArrays(labelArray, questionMap, editorPaneArray, seperatorArray, scrollPaneArray);
             setViewPortForScrollPane(scrollPaneArray, editorPaneArray);
-
-            populateGroups(horizontalGroupForJPanel, labelArray, scrollPaneArray, seperatorArray);
-            populateGroupsVertical(verticalGroupForJPanel, labelArray, scrollPaneArray, seperatorArray);
+            JLabel categoryLabel = new JLabel();
+            categoryLabel.setText("<html><i><strong>"+new Questions().getCategoryById(categoryId)+"</strong></i></html>");
+            populateGroups(categoryLabel, horizontalGroupForJPanel, labelArray, scrollPaneArray, seperatorArray);
+            populateGroupsVertical(categoryLabel,verticalGroupForJPanel, labelArray, scrollPaneArray, seperatorArray);
 
         }
 
@@ -192,7 +193,7 @@ public class QuestionsForm extends javax.swing.JFrame {
     // End of variables declaration      
 
     private void populateArrays(JLabel[] labelArray, TreeMap<Integer, String> question, JEditorPane[] textAreaArray, JSeparator[] seperatorArray, JScrollPane[] scrollPaneArray) {
-       int j=0;
+        int j = 0;
         for (Integer i : question.keySet()) {
             labelArray[j] = new JLabel(getHtmlQuotes(question.get(i)));
             textAreaArray[j] = new JEditorPane();
@@ -209,9 +210,10 @@ public class QuestionsForm extends javax.swing.JFrame {
         return sb.toString();
     }
 
-    private void populateGroups(GroupLayout.ParallelGroup group, JLabel[] labelArray, JScrollPane[] scrollPaneArray, JSeparator[] seperatorArray) {
+    private void populateGroups(JLabel categoryLabel, GroupLayout.ParallelGroup group, JLabel[] labelArray, JScrollPane[] scrollPaneArray, JSeparator[] seperatorArray) {
         for (int i = 0; i < labelArray.length; i++) {
 
+            group.addComponent(categoryLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 800, Short.MAX_VALUE);
             group.addComponent(labelArray[i], javax.swing.GroupLayout.PREFERRED_SIZE, 800, Short.MAX_VALUE);
             group.addComponent(scrollPaneArray[i], javax.swing.GroupLayout.PREFERRED_SIZE, 800, Short.MAX_VALUE);
             group.addComponent(seperatorArray[i], javax.swing.GroupLayout.PREFERRED_SIZE, 800, Short.MAX_VALUE);
@@ -221,7 +223,8 @@ public class QuestionsForm extends javax.swing.JFrame {
 
     }
 
-    private void populateGroupsVertical(GroupLayout.SequentialGroup group, JLabel[] labelArray, JScrollPane[] scrollPaneArray, JSeparator[] seperatorArray) {
+    private void populateGroupsVertical(JLabel categoryLabel, GroupLayout.SequentialGroup group, JLabel[] labelArray, JScrollPane[] scrollPaneArray, JSeparator[] seperatorArray) {
+        group.addComponent(categoryLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
 
         for (int i = 0; i < labelArray.length; i++) {
             group.addComponent(labelArray[i], javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
