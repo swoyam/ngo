@@ -5,6 +5,7 @@
  */
 package ngo;
 
+import ngo.utils.GeneralUtils;
 import java.util.TreeMap;
 import javax.swing.GroupLayout;
 import javax.swing.JEditorPane;
@@ -20,11 +21,15 @@ import ngo.model.Questions;
  */
 public class QuestionsForm extends javax.swing.JFrame {
 
+    public QuestionsForm() {
+        this(1);
+    }
+
     /**
      * Creates new form QuestionsTest
      */
-    public QuestionsForm() {
-        answerSet = new Questions().getAnswer(1);
+    public QuestionsForm(int officeId) {
+        questionIdAnswersMap = new Questions().getAnswerForOfficeId(officeId);
 
         initComponents();
         setLocationRelativeTo(null);
@@ -37,15 +42,15 @@ public class QuestionsForm extends javax.swing.JFrame {
         title = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
-        editorPaneMap = new TreeMap<>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        editorPaneMap = new TreeMap<Integer, JEditorPane>();
+        submitButton = new javax.swing.JButton();
+        resetButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         closeMenu = new javax.swing.JMenuItem();
         saveMenu = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Additional Questions");
 
         title.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
@@ -55,33 +60,28 @@ public class QuestionsForm extends javax.swing.JFrame {
         title.setBorder(null);
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder("Additional Questions"));
-//        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-//        jScrollPane1.setHorizontalScrollBar(null);
 
-        jButton1.setText("Submit");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        submitButton.setText("Submit");
+        submitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                submitButtonActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Reset");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        resetButton.setText("Reset");
+        resetButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                resetButtonActionPerformed(evt);
             }
         });
 
         //code to add dynamic labels
-//        JLabel[] labelArray = new JLabel[questionArray.length];
-//        JEditorPane[] editorPaneArray = new JEditorPane[questionArray.length];
-//        JSeparator[] seperatorArray = new JSeparator[questionArray.length];
-//        JScrollPane[] scrollPaneArray = new JScrollPane[questionArray.length];
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1Layout.setAutoCreateContainerGaps(true);
         jPanel1Layout.setAutoCreateGaps(true);
 
         jPanel1.setLayout(jPanel1Layout);
+
         GroupLayout.ParallelGroup horizontalGroupForJPanel = jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false);
         GroupLayout.SequentialGroup verticalGroupForJPanel = jPanel1Layout.createSequentialGroup();
 
@@ -93,10 +93,13 @@ public class QuestionsForm extends javax.swing.JFrame {
             //  JEditorPane[] editorPaneArray = new JEditorPane[questionMap.size()];
             JSeparator[] seperatorArray = new JSeparator[questionMap.size()];
             JScrollPane[] scrollPaneArray = new JScrollPane[questionMap.size()];
-            populateArrays(labelArray, questionMap, editorPaneMap, seperatorArray, scrollPaneArray, answerSet);
-            setViewPortForScrollPane(scrollPaneArray, editorPaneMap);
+
+            populateArrays(labelArray, questionMap, editorPaneMap, seperatorArray, scrollPaneArray, questionIdAnswersMap);
+            //setViewPortForScrollPane(scrollPaneArray, editorPaneMap, questionMap);
+
             JLabel categoryLabel = new JLabel();
             categoryLabel.setText("<html><i><strong>" + new Questions().getCategoryById(categoryId) + "</strong></i></html>");
+
             populateGroups(categoryLabel, horizontalGroupForJPanel, labelArray, scrollPaneArray, seperatorArray);
             populateGroupsVertical(categoryLabel, verticalGroupForJPanel, labelArray, scrollPaneArray, seperatorArray);
 
@@ -107,9 +110,9 @@ public class QuestionsForm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jButton2)
+                                        .addComponent(resetButton)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jButton1))
+                                        .addComponent(submitButton))
                                 .addGroup(horizontalGroupForJPanel)).addContainerGap(28, Short.MAX_VALUE)
                 )
         );
@@ -118,8 +121,8 @@ public class QuestionsForm extends javax.swing.JFrame {
                 .addGroup(verticalGroupForJPanel
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButton1)
-                                .addComponent(jButton2))
+                                .addComponent(submitButton)
+                                .addComponent(resetButton))
                         .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -127,23 +130,22 @@ public class QuestionsForm extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        closeMenu.setText("Close");
+        saveMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveMenu.setText("Save");
-
-        closeMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeMenuActionPerformed(evt);
-            }
-        });
-
         saveMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveMenuActionPerformed(evt);
             }
         });
-
-        jMenu1.add(closeMenu);
         jMenu1.add(saveMenu);
+
+        closeMenu.setText("Close");
+        closeMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeMenuActionPerformed(evt);
+            }
+        });
+        jMenu1.add(closeMenu);
 
         jMenuBar1.add(jMenu1);
 
@@ -176,23 +178,25 @@ public class QuestionsForm extends javax.swing.JFrame {
 
     private void saveMenuActionPerformed(java.awt.event.ActionEvent evt) {
 
-        boolean insert = answerSet.size() <= 0;
+        boolean insert = questionIdAnswersMap.size() <= 0;
         if (insert) {
             new Questions().insertAnswer(editorPaneMap);
             JOptionPane.showMessageDialog(null, "Record inserted sucessfully");
-        }
-        else{
+        } else {
             new Questions().insertAnswer(editorPaneMap);
             JOptionPane.showMessageDialog(null, "Record updated sucessfully");
         }
     }
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        for (int key : editorPaneMap.keySet()) {
+            editorPaneMap.get(key).setText(null);
+        }
+
     }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        saveMenuActionPerformed(evt);
     }
 
     /**
@@ -211,26 +215,33 @@ public class QuestionsForm extends javax.swing.JFrame {
     // Variables declaration - do not modify                     
     private javax.swing.JMenuItem closeMenu;
     private javax.swing.JMenuItem saveMenu;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton submitButton;
+    private javax.swing.JButton resetButton;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel title;
     TreeMap<Integer, JEditorPane> editorPaneMap;
-    TreeMap<Integer, String> answerSet;
+    TreeMap<Integer, String> questionIdAnswersMap;
 
     // End of variables declaration      
-    private void populateArrays(JLabel[] labelArray, TreeMap<Integer, String> question, TreeMap<Integer, JEditorPane> editorPane, JSeparator[] seperatorArray, JScrollPane[] scrollPaneArray, TreeMap<Integer, String> answers) {
+    private void populateArrays(JLabel[] labelArray, TreeMap<Integer, String> questionWithIdMap, TreeMap<Integer, JEditorPane> editorPaneWithQuestionIdMap, JSeparator[] seperatorArray, JScrollPane[] scrollPaneArray, TreeMap<Integer, String> answers) {
+
         int j = 0;
-        for (Integer i : question.keySet()) {
+
+        for (Integer questionId : questionWithIdMap.keySet()) {
+
             JEditorPane editorPane1 = new JEditorPane();
-            editorPane1.setText(answers.get(i));
-            labelArray[j] = new JLabel(getHtmlQuotes(question.get(i)));
-            editorPane.put(i, editorPane1);
+            editorPane1.setText(answers.containsKey(questionId) ? answers.get(questionId) : null);
+
+            labelArray[j] = new JLabel(getHtmlQuotes(questionWithIdMap.get(questionId)));
+            editorPaneWithQuestionIdMap.put(questionId, editorPane1);
             seperatorArray[j] = new JSeparator(0);
             scrollPaneArray[j] = new JScrollPane();
+
+            scrollPaneArray[j].setViewportView(editorPaneWithQuestionIdMap.get(questionId)); // todo do this to replace function setViewPortForScrollPane
+
             j++;
         }
 
@@ -244,13 +255,10 @@ public class QuestionsForm extends javax.swing.JFrame {
 
     private void populateGroups(JLabel categoryLabel, GroupLayout.ParallelGroup group, JLabel[] labelArray, JScrollPane[] scrollPaneArray, JSeparator[] seperatorArray) {
         for (int i = 0; i < labelArray.length; i++) {
-
             group.addComponent(categoryLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 800, Short.MAX_VALUE);
             group.addComponent(labelArray[i], javax.swing.GroupLayout.PREFERRED_SIZE, 800, Short.MAX_VALUE);
             group.addComponent(scrollPaneArray[i], javax.swing.GroupLayout.PREFERRED_SIZE, 800, Short.MAX_VALUE);
             group.addComponent(seperatorArray[i], javax.swing.GroupLayout.PREFERRED_SIZE, 800, Short.MAX_VALUE);
-//            group.addComponent(labelArray[i],  javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
-//            group.addComponent(textAreaArray[i], javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
         }
 
     }
@@ -267,21 +275,6 @@ public class QuestionsForm extends javax.swing.JFrame {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
         }
 
-    }
-
-//    private void setViewPortForScrollPane(JScrollPane[] scrollPaneArray, JEditorPane[] editorPaneArray) {
-//        for (int i = 0; i < editorPaneArray.length; i++) {
-//            scrollPaneArray[i].setViewportView(editorPaneArray[i]);
-//   
-//        }
-//    }
-    static int count = 1;
-
-    private void setViewPortForScrollPane(JScrollPane[] scrollPaneArray, TreeMap<Integer, JEditorPane> editorPane) {
-        for (int i = 0; i < scrollPaneArray.length; i++) {
-            scrollPaneArray[i].setViewportView(editorPane.get(count));
-            count++;
-        }
     }
 
 }
