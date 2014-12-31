@@ -17,9 +17,6 @@ import ngo.dbConnect.SqliteJDBC;
  * @author memoshakya
  */
 public class Questions {
-    public static void main(String[] args) {
-        getAnswer(1);
-    }
 
     public TreeMap<Integer, TreeMap<Integer, String>> getCategoryWiseQuestions() {
 
@@ -31,12 +28,12 @@ public class Questions {
             Connection c = sqliteJDBC.getSqliteConnection();
             stmt = c.createStatement();
 
-            ResultSet rs = stmt.executeQuery("SELECT qc.q_category_id, q.q_id, q.question FROM questions q LEFT JOIN question_category qc ON qc.q_category_id = q.question_category_q_category_id;");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM questions;");
             while (rs.next()) {
 
                 Integer questionId = rs.getInt("q_id");
                 String question = rs.getString("question");
-                Integer questionCategory = rs.getInt("q_category_id");
+                Integer questionCategory = rs.getInt("question_category_q_category_id");
 
                 if (!result.containsKey(questionCategory)) {
                     result.put(questionCategory, new TreeMap<Integer, String>());
@@ -52,7 +49,7 @@ public class Questions {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Operation completed successfully");
+        System.out.println("Questions Fetched Successfully");
         return result;
     }
 
@@ -136,7 +133,7 @@ public class Questions {
         return true;
     }
 
-    public static TreeMap<Integer, String> getAnswer(Integer organizationId) {
+    public TreeMap<Integer, String> getAnswerForOfficeId(Integer organizationId) {
         TreeMap<Integer, String> result = new TreeMap<>();
 
         SqliteJDBC sqliteJDBC = new SqliteJDBC();
