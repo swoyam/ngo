@@ -7,6 +7,7 @@ package ngo;
 
 import java.util.Map;
 import ngo.model.Dashboard;
+import ngo.utils.GeneralUtils;
 
 /**
  *
@@ -20,11 +21,7 @@ public class OrganizationDetails extends javax.swing.JFrame {
      * Creates new form ViewOrganization
      */
     public OrganizationDetails() {
-        initComponents();
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setTitle("View Organization");
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        this(-1);
         
        
         //sectorComboBox.setModel(getModelForSectorComboBox(new Dashboard().getSectors()));
@@ -32,37 +29,52 @@ public class OrganizationDetails extends javax.swing.JFrame {
     
     public OrganizationDetails(int officeId) {
         initComponents();
+        GeneralUtils.setUILookAndFeel(this);
         setLocationRelativeTo(null);
         setResizable(false);
-        setTitle("View Organization");
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setValues(new Dashboard().getOrganization(officeId));
+        this.office_id = officeId;
         
        
     }
 
     public void setValues(Map<String, Object> valueMap) {
-        System.out.println(valueMap);
-        this.orgNameTxtField.setText(valueMap.get("officeName").toString());
         this.orgNameTxtField.setEditable(false);
-        this.addressTxtField.setText(valueMap.get("address").toString());
         this.addressTxtField.setEditable(false);
-        this.websiteTextField.setText(valueMap.get("website").toString());
         this.websiteTextField.setEditable(false);
-        this.emailTextField.setText(valueMap.get("email").toString());
         this.emailTextField.setEditable(false);
-        this.telephoneTxtField.setText(valueMap.get("telephone_no").toString());
         this.telephoneTxtField.setEditable(false);
-        this.mobileTxtField.setText(valueMap.get("mobile_number").toString());
         this.mobileTxtField.setEditable(false);
-        this.chairPersonTxtField.setText(valueMap.get("chair_person").toString());
         this.chairPersonTxtField.setEditable(false);
-        this.hodTxtField.setText(valueMap.get("head_of_org").toString());
         this.hodTxtField.setEditable(false);
-        this.sectorTextField.setText(valueMap.get("sector_name").toString());
         this.sectorTextField.setEditable(false);
         
-        this.office_id = Integer.parseInt(valueMap.get("office_id").toString());
+        String officeName = valueMap.containsKey("officeName") ? valueMap.get("officeName").toString() : "";
+        String address = valueMap.containsKey("address") ? valueMap.get("address").toString() : "";
+        String website = valueMap.containsKey("website") ? valueMap.get("website").toString() : "";
+        String email = valueMap.containsKey("email") ? valueMap.get("email").toString() : "";
+        String telNo = valueMap.containsKey("telephone_no") ? valueMap.get("telephone_no").toString() : "";
+        String mobNo = valueMap.containsKey("mobile_number") ? valueMap.get("mobile_number").toString() : "";
+        String chairPerson = valueMap.containsKey("chair_person") ? valueMap.get("chair_person").toString() : "";
+        String headOfOrg = valueMap.containsKey("head_of_org") ? valueMap.get("head_of_org").toString() : "";
+        String sectorName = valueMap.containsKey("sector_name") ? valueMap.get("sector_name").toString() : "";
+                
+        setTitle("Organization Details: "+ officeName);
+        
+        
+        this.orgNameTxtField.setText(officeName);
+        this.addressTxtField.setText(address);
+        this.websiteTextField.setText(website);
+        this.emailTextField.setText(email);
+        this.telephoneTxtField.setText(telNo);
+        this.mobileTxtField.setText(mobNo);
+        this.chairPersonTxtField.setText(chairPerson);
+        this.hodTxtField.setText(headOfOrg);
+        this.sectorTextField.setText(sectorName);
+        
+        
     }
 
     /**
@@ -132,6 +144,7 @@ public class OrganizationDetails extends javax.swing.JFrame {
         asterisk2.setForeground(new java.awt.Color(246, 9, 9));
 
         Delete.setText("Delete");
+        Delete.setToolTipText("Delete");
         Delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DeleteActionPerformed(evt);
@@ -139,6 +152,8 @@ public class OrganizationDetails extends javax.swing.JFrame {
         });
 
         Update.setText("Edit");
+        Update.setToolTipText("Edit");
+        Update.setSelected(true);
         Update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 UpdateActionPerformed(evt);
@@ -228,7 +243,7 @@ public class OrganizationDetails extends javax.swing.JFrame {
                     .addComponent(sectorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(41, 41, 41)
                 .addComponent(asterisk2)
-                .addGap(0, 8, Short.MAX_VALUE))
+                .addGap(0, 10, Short.MAX_VALUE))
         );
 
         jMenu1.setText("File");
@@ -290,29 +305,6 @@ public class OrganizationDetails extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("GTK+".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(OrganizationDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(OrganizationDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(OrganizationDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(OrganizationDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
