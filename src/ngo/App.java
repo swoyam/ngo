@@ -1,5 +1,8 @@
 package ngo;
 
+import ngo.utils.Message;
+import ngo.license.LicenseValidation;
+import ngo.license.LicenseValidator;
 import java.io.File;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -43,9 +46,8 @@ public class App {
         folderName.mkdirs(); //creating db folder to store database
         SqliteJDBC jdbc = new SqliteJDBC();
         
-        Message initDbMessage = jdbc.initiateApplicationDatabase();
-        //jdbc.insertIntoSector();
-        // insert sector is it does not exist only
+        Message initDbMessage;
+        initDbMessage = jdbc.initiateApplicationDatabase();
         
         System.out.println(initDbMessage);
     }

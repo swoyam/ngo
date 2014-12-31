@@ -12,8 +12,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import ngo.LicenseValidator;
-import ngo.Message;
+import ngo.license.LicenseValidator;
+import ngo.utils.Message;
 import ngo.dbConnect.SqliteJDBC;
 
 /**

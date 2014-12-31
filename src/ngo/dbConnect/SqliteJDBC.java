@@ -15,7 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import ngo.Message;
+import ngo.utils.Message;
 
 /**
  *

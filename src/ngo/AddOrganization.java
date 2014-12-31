@@ -5,6 +5,8 @@
  */
 package ngo;
 
+import ngo.utils.GeneralUtils;
+import ngo.utils.Item;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -294,7 +296,7 @@ public class AddOrganization extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(166, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();

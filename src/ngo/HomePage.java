@@ -5,6 +5,8 @@
  */
 package ngo;
 
+import ngo.utils.GeneralUtils;
+import ngo.utils.TextPrompt;
 import java.awt.EventQueue;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -21,7 +23,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import ngo.model.Dashboard;
-import ngo.search.TextPrompt;
 
 /**
  *
