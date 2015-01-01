@@ -39,10 +39,16 @@ public class SqliteJDBC {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection("jdbc:sqlite:db/ngo.db");
 
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(SqliteJDBC.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            Logger.getLogger(SqliteJDBC.class.getName()).log(Level.SEVERE, null, e);
+            System.exit(0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Logger.getLogger(SqliteJDBC.class.getName()).log(Level.SEVERE, null, e);
             System.exit(0);
         }
+
         System.out.println("Opened database successfully");
         return conn;
     }

@@ -22,7 +22,8 @@ public class Questions {
 
         SqliteJDBC sqliteJDBC = new SqliteJDBC();
 
-        TreeMap<Integer, TreeMap<Integer, String>> result = new TreeMap<>();
+        TreeMap<Integer, TreeMap<Integer, String>> result = new TreeMap<Integer, TreeMap<Integer, String>>();
+
         Statement stmt = null;
         try {
             Connection c = sqliteJDBC.getSqliteConnection();
@@ -134,13 +135,13 @@ public class Questions {
     }
 
     public TreeMap<Integer, String> getAnswerForOfficeId(Integer organizationId) {
-        TreeMap<Integer, String> result = new TreeMap<>();
+        TreeMap<Integer, String> result = new TreeMap<Integer, String>();
 
         SqliteJDBC sqliteJDBC = new SqliteJDBC();
         Statement stmt = null;
         try {
             Connection c = sqliteJDBC.getSqliteConnection();
-            stmt=c.createStatement();
+            stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT answer,questions_q_id FROM answers where organization_office_id= " + organizationId);
             while (rs.next()) {
 
