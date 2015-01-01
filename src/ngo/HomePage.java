@@ -31,7 +31,6 @@ import ngo.model.Dashboard;
 public class HomePage extends javax.swing.JFrame {
 
     private final JTextField searchBoxTextField;
-    private final Vector<String> vector = new Vector<String>();
     private boolean hide_flag = false;
     String[] defaultMessageForSearchBox = {"Type text to search."};
 
@@ -186,8 +185,6 @@ public class HomePage extends javax.swing.JFrame {
         exitMenuItem = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         addNewOrganization = new javax.swing.JMenuItem();
-        editOrganization = new javax.swing.JMenuItem();
-        deleteOrganization = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
@@ -252,24 +249,6 @@ public class HomePage extends javax.swing.JFrame {
         });
         jMenu2.add(addNewOrganization);
 
-        editOrganization.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        editOrganization.setText("Edit");
-        editOrganization.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editOrganizationActionPerformed(evt);
-            }
-        });
-        jMenu2.add(editOrganization);
-
-        deleteOrganization.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
-        deleteOrganization.setText("Delete");
-        deleteOrganization.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteOrganizationActionPerformed(evt);
-            }
-        });
-        jMenu2.add(deleteOrganization);
-
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -325,10 +304,6 @@ public class HomePage extends javax.swing.JFrame {
         addOrganization.setVisible(true);
     }//GEN-LAST:event_addNewOrganizationActionPerformed
 
-    private void editOrganizationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOrganizationActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editOrganizationActionPerformed
-
     private void refreshMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshMenuActionPerformed
         refreshJTree();
     }//GEN-LAST:event_refreshMenuActionPerformed
@@ -341,10 +316,6 @@ public class HomePage extends javax.swing.JFrame {
     private void searchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBoxActionPerformed
 
     }//GEN-LAST:event_searchBoxActionPerformed
-
-    private void deleteOrganizationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteOrganizationActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deleteOrganizationActionPerformed
 
     private void refreshJTree() {
         jTree1.setModel(getTreeModel(new Dashboard().getSectorWiseOrganizations()));
@@ -412,8 +383,6 @@ public class HomePage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem addNewOrganization;
-    private javax.swing.JMenuItem deleteOrganization;
-    private javax.swing.JMenuItem editOrganization;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;

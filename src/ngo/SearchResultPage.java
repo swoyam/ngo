@@ -22,6 +22,8 @@ import ngo.model.Dashboard;
  */
 public class SearchResultPage extends javax.swing.JFrame {
 
+    private String searchKey;
+
     /**
      * Creates new form SearchResultPage
      */
@@ -35,6 +37,9 @@ public class SearchResultPage extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         searchKeyLabel.setText("Search Result for '" + keyword + "' are follows. Double Click to view details.");
         System.out.println(new Dashboard().getMatchingOrganizationsIdName(keyword));
+
+        this.searchKey = keyword;
+
         resultList.setModel(getListModel(new Dashboard().getMatchingOrganizationsIdName(keyword)));
 
         MouseListener mouseListener = new MouseAdapter() {
@@ -74,11 +79,16 @@ public class SearchResultPage extends javax.swing.JFrame {
         exitMenuItem = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         addNewOrganization = new javax.swing.JMenuItem();
-        editOrganization = new javax.swing.JMenuItem();
-        deleteOrganization = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Search Results");
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Search Results"));
 
@@ -134,19 +144,6 @@ public class SearchResultPage extends javax.swing.JFrame {
         });
         jMenu2.add(addNewOrganization);
 
-        editOrganization.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        editOrganization.setText("Edit");
-        editOrganization.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editOrganizationActionPerformed(evt);
-            }
-        });
-        jMenu2.add(editOrganization);
-
-        deleteOrganization.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
-        deleteOrganization.setText("Delete");
-        jMenu2.add(deleteOrganization);
-
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -185,15 +182,16 @@ public class SearchResultPage extends javax.swing.JFrame {
         addOrganization.setVisible(true);
     }//GEN-LAST:event_addNewOrganizationActionPerformed
 
-    private void editOrganizationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOrganizationActionPerformed
-
-    }//GEN-LAST:event_editOrganizationActionPerformed
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        System.out.println("Window Refreshed");
+        refreshList();
+    }//GEN-LAST:event_formWindowGainedFocus
 
     private ListModel getListModel(Vector<Item> matchingOrganizations) {
         DefaultListModel<Item> listModel = new DefaultListModel<Item>();
-            for(Item item : matchingOrganizations){
-                listModel.addElement(item);
-            }
+        for (Item item : matchingOrganizations) {
+            listModel.addElement(item);
+        }
         return listModel;
     }
 
@@ -212,8 +210,6 @@ public class SearchResultPage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem addNewOrganization;
-    private javax.swing.JMenuItem deleteOrganization;
-    private javax.swing.JMenuItem editOrganization;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -224,4 +220,11 @@ public class SearchResultPage extends javax.swing.JFrame {
     private javax.swing.JLabel searchKeyLabel;
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
+
+    private void refreshList() {
+        System.out.println("List Refreshed");
+        resultList.setModel(getListModel(new Dashboard().getMatchingOrganizationsIdName(searchKey)));
+        resultList.repaint();
+
+    }
 }

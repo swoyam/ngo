@@ -6,6 +6,8 @@
 package ngo.utils;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -25,6 +27,34 @@ public class GeneralUtils {
         }
 
         SwingUtilities.updateComponentTreeUI(frame);
+    }
+    
+    public static boolean validateTextField(JFrame frame, JTextField field, String label) {
+        String testString = field.getText();
+        if (testString == null || testString.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frame,
+                    label + " Cannot be Empty.",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE);
+            field.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean validateLength(JFrame frame, JTextField field, String componentLabel, int maxLength) {
+        String testString = field.getText().trim();
+
+        if (testString.length() > maxLength) {
+            JOptionPane.showMessageDialog(frame,
+                    componentLabel + " Cannot be more than " + maxLength + " characters.",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE);
+            field.requestFocus();
+            return false;
+        }
+
+        return true;
     }
     
 }

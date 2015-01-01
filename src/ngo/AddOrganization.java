@@ -5,17 +5,17 @@
  */
 package ngo;
 
+import ngo.model.Organization;
 import ngo.utils.GeneralUtils;
 import ngo.utils.Item;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 import javax.swing.ComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import ngo.dbConnect.SqliteJDBC;
 import ngo.model.Dashboard;
+import ngo.utils.Message;
 
 /**
  *
@@ -296,7 +296,7 @@ public class AddOrganization extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(130, Short.MAX_VALUE))
         );
 
         pack();
@@ -317,65 +317,79 @@ public class AddOrganization extends javax.swing.JFrame {
     @SuppressWarnings("empty-statement")
     private void addOrganizationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOrganizationButtonActionPerformed
 
-        if (!validateTextField(orgNameTxtField, "Organization Name")) {
+        if (!GeneralUtils.validateTextField(this,orgNameTxtField, "Organization Name")) {
             return;
         }
-        if (!validateTextField(telephoneTxtField, "Telephone Number")) {
+        if (!GeneralUtils.validateTextField(this,telephoneTxtField, "Telephone Number") || !GeneralUtils.validateLength(this,telephoneTxtField, "Telephone Number", 50)) {
             return;
         }
-        if (!validateTextField(chairPersonTxtField, "Chairperson Name")) {
+        if (!GeneralUtils.validateTextField(this,chairPersonTxtField, "Chairperson Name") || !GeneralUtils.validateLength(this,chairPersonTxtField, "Chairperson", 255)) {
             return;
         }
-        if (!validateTextField(hodTxtField, "Head of Organization")) {
+        if (!GeneralUtils.validateTextField(this,hodTxtField, "Head of Organization") || !GeneralUtils.validateLength(this,hodTxtField, "Head of Organization", 255)) {
             return;
         }
 
+        
+        //todo validate website and email patterns
+        if (!GeneralUtils.validateLength(this,websiteTextField, "Website", 200)) {
+            return;
+        }
+        
+        if (!GeneralUtils.validateLength(this,emailTextField, "Email", 200)) {
+            return;
+        }
+
+        if (!GeneralUtils.validateLength(this,mobileTxtField, "Mobile Number", 50)) {
+            return;
+        }
+
+        
+        
         String sectorId = Integer.toString(((Item) sectorComboBox.getSelectedItem()).getId());
 
-//        LinkedList<Object> values = new LinkedList<Object>();
-//        values.add(orgNameTxtField.getText());
-//        values.add(addressTxtField.getText());
-//        values.add(websiteTextField.getText());
-//        values.add(emailTextField.getText());
-//        values.add(telephoneTxtField.getText());
-//        values.add(mobileTxtField.getText());
-//        values.add(chairPersonTxtField.getText());
-//        values.add(hodTxtField.getText());
-//        values.add(sectorId);
-//        if(!isAdd) values.add(this.org_id);
-        LinkedHashMap<String, Object> values = new LinkedHashMap<>();
-        values.put("office_name", orgNameTxtField.getText());
-        values.put("address", addressTxtField.getText());
-        values.put("website", websiteTextField.getText());
-        values.put("email", emailTextField.getText());
-        values.put("telephone_no", telephoneTxtField.getText());
-        values.put("mobile_number", mobileTxtField.getText());
-        values.put("chair_person", chairPersonTxtField.getText());
-        values.put("head_of_org", hodTxtField.getText());
-        values.put("sector_sector_id", sectorId);
+        Organization organization = new Organization();
+        organization.setOfficeName(orgNameTxtField.getText());
+        organization.setAddress(addressTxtField.getText());
+        organization.setWebsite(websiteTextField.getText());
+        organization.setEmail(emailTextField.getText());
+        organization.setTelephoneNo(telephoneTxtField.getText());
+        organization.setMobileNo(mobileTxtField.getText());
+        organization.setChairPerson(chairPersonTxtField.getText());
+        organization.setHeadOfOrg(hodTxtField.getText());
+        organization.setSectorId(sectorId);
 
         if (!isAdd) {
-            values.put("office_id", this.org_id);
+            organization.setOfficeId(this.org_id);
         }
 
         if (isAdd) {
-            if (new SqliteJDBC().insertIntoOrganization(values)) {
+            Message insertOrganizationMessage = organization.insertIntoOrganization();
+            int officeId = Integer.parseInt(insertOrganizationMessage.getMessage());
+            if (insertOrganizationMessage.getStatus()) {
                 JOptionPane.showMessageDialog(this,
                         "Organization Added Successfully",
                         "Success",
                         JOptionPane.INFORMATION_MESSAGE);
+                OrganizationDetails orgDetails = new OrganizationDetails(officeId);
+                orgDetails.setVisible(true);
+
+                this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Error! Operation Failed",
                         "Error",
-                        JOptionPane.ERROR);
+                        JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            if (new SqliteJDBC().updateOrganization(values)) {
+            if (organization.updateOrganization()) {
                 JOptionPane.showMessageDialog(this,
                         "Organization updated Successfully",
                         "Success",
                         JOptionPane.INFORMATION_MESSAGE);
+                OrganizationDetails orgDetails = new OrganizationDetails(org_id);
+                orgDetails.setVisible(true);
+                this.dispose();
             } else {
                 JOptionPane.showMessageDialog(null,
                         "Error! Operation Failed"
@@ -394,7 +408,7 @@ public class AddOrganization extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -424,19 +438,8 @@ public class AddOrganization extends javax.swing.JFrame {
         return new javax.swing.DefaultComboBoxModel(vector);
     }
 
-    private boolean validateTextField(JTextField field, String label) {
-        String testString = field.getText();
-        if (testString == null || testString.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    label + " Cannot be Empty.",
-                    "Warning",
-                    JOptionPane.WARNING_MESSAGE);
-            field.requestFocus();
-            return false;
-        }
-        return true;
-    }
-
+    
+    
     public void setValues(Map<String, Object> valueMap) {
         System.out.println("valueMap" + valueMap);
         this.orgNameTxtField.setText(valueMap.get("officeName").toString());
@@ -446,7 +449,7 @@ public class AddOrganization extends javax.swing.JFrame {
         this.mobileTxtField.setText(valueMap.get("mobile_number").toString());
         this.chairPersonTxtField.setText(valueMap.get("chair_person").toString());
         this.hodTxtField.setText(valueMap.get("head_of_org").toString());
-        this.addOrganizationButton.setText("update");
+        this.addOrganizationButton.setText("Update");
         this.sectorComboBox.setEnabled(true);
         this.isAdd = false;
         this.org_id = Integer.parseInt(valueMap.get("office_id").toString());

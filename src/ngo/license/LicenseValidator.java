@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import ngo.utils.Message;
 import ngo.model.Users;
 import org.joda.time.DateTime;
-import sun.security.x509.X500Name;
 
 /**
  *

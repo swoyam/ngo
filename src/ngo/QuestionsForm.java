@@ -5,6 +5,7 @@
  */
 package ngo;
 
+import java.awt.event.ActionEvent;
 import ngo.utils.GeneralUtils;
 import java.util.TreeMap;
 import javax.swing.GroupLayout;
@@ -13,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import ngo.model.Answers;
 import ngo.model.Questions;
 
 /**
@@ -21,20 +23,31 @@ import ngo.model.Questions;
  */
 public class QuestionsForm extends javax.swing.JFrame {
 
-    public QuestionsForm() {
-        this(1);
+    public enum Type {
+
+        EDIT, VIEW
     }
+
+    public QuestionsForm() {
+        this(0, Type.VIEW);
+    }
+
+    private Type formType;
+    private int officeId;
 
     /**
      * Creates new form QuestionsTest
      */
-    public QuestionsForm(int officeId) {
+    public QuestionsForm(int officeId, QuestionsForm.Type type) {
+        this.officeId = officeId;
+        this.formType = type;
         questionIdAnswersMap = new Questions().getAnswerForOfficeId(officeId);
 
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
         GeneralUtils.setUILookAndFeel(this);
+
     }
 
     private void initComponents() {
@@ -46,9 +59,11 @@ public class QuestionsForm extends javax.swing.JFrame {
         submitButton = new javax.swing.JButton();
         resetButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        closeMenu = new javax.swing.JMenuItem();
-        saveMenu = new javax.swing.JMenuItem();
+        fileMenu = new javax.swing.JMenu();
+        editMenu = new javax.swing.JMenu();
+        closeMenuItem = new javax.swing.JMenuItem();
+        saveMenuItem = new javax.swing.JMenuItem();
+        editAnswersDetailsItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Additional Questions");
@@ -128,26 +143,50 @@ public class QuestionsForm extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(jPanel1);
 
-        jMenu1.setText("File");
+        //setting editor pane un-editable
+        if (formType.equals(Type.VIEW)) {
+            for (int questionId : editorPaneMap.keySet()) {
+                editorPaneMap.get(questionId).setEditable(false);
 
-        saveMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        saveMenu.setText("Save");
-        saveMenu.addActionListener(new java.awt.event.ActionListener() {
+            }
+
+            saveMenuItem.setEnabled(false);
+            resetButton.setEnabled(false);
+            submitButton.setEnabled(false);
+        }
+
+        fileMenu.setText("File");
+
+        saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveMenuItem.setText("Save");
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveMenuActionPerformed(evt);
             }
         });
-        jMenu1.add(saveMenu);
+        fileMenu.add(saveMenuItem);
 
-        closeMenu.setText("Close");
-        closeMenu.addActionListener(new java.awt.event.ActionListener() {
+        closeMenuItem.setText("Close");
+        closeMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeMenuActionPerformed(evt);
             }
         });
-        jMenu1.add(closeMenu);
+        fileMenu.add(closeMenuItem);
 
-        jMenuBar1.add(jMenu1);
+        editMenu.setText("Edit");
+        editAnswersDetailsItem.setText("Edit Details");
+        editAnswersDetailsItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editAnswersActionPerformed(evt);
+            }
+        });
+        editMenu.add(editAnswersDetailsItem);
+
+        jMenuBar1.add(fileMenu);
+        if (formType.equals(Type.EDIT)) {
+            jMenuBar1.add(editMenu);
+        }
 
         setJMenuBar(jMenuBar1);
 
@@ -180,11 +219,33 @@ public class QuestionsForm extends javax.swing.JFrame {
 
         boolean insert = questionIdAnswersMap.size() <= 0;
         if (insert) {
-            new Questions().insertAnswer(editorPaneMap);
-            JOptionPane.showMessageDialog(null, "Record inserted sucessfully");
+            if (new Answers().insertAnswerForOfficeId(officeId, editorPaneMap)) {
+                JOptionPane.showMessageDialog(this,
+                        "Record inserted sucessfully",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Record not inserted",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+            }
         } else {
-            new Questions().insertAnswer(editorPaneMap);
-            JOptionPane.showMessageDialog(null, "Record updated sucessfully");
+
+            if (new Answers().updateAnswerForOfficeId(officeId, editorPaneMap)) {
+                JOptionPane.showMessageDialog(this,
+                        "Record updated sucessfully.",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Record not updated.",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+
         }
     }
 
@@ -197,6 +258,14 @@ public class QuestionsForm extends javax.swing.JFrame {
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {
         saveMenuActionPerformed(evt);
+    }
+
+    private void editAnswersActionPerformed(ActionEvent evt) {
+
+        QuestionsForm form = new QuestionsForm(officeId, Type.EDIT);
+        form.setVisible(true);
+        this.dispose();
+
     }
 
     /**
@@ -213,11 +282,13 @@ public class QuestionsForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify                     
-    private javax.swing.JMenuItem closeMenu;
-    private javax.swing.JMenuItem saveMenu;
+    private javax.swing.JMenuItem closeMenuItem;
+    private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JMenuItem editAnswersDetailsItem;
     private javax.swing.JButton submitButton;
     private javax.swing.JButton resetButton;
-    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenu editMenu;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

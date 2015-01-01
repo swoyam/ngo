@@ -114,7 +114,7 @@ public class SqliteJDBC {
                     + ");";
             stmt.executeUpdate(sql);
 
-            //question
+            //sector
             sql = "CREATE TABLE IF NOT EXISTS \"sector\" (\n"
                     + "    \"sector_id\" integer NOT NULL  PRIMARY KEY AUTOINCREMENT,\n"
                     + "    \"sector_name\" varchar(400) NOT NULL,\n"

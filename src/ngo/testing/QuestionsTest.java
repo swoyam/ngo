@@ -78,6 +78,7 @@ public class QuestionsTest extends javax.swing.JFrame {
         jScrollPane4.setViewportView(jEditorPane3);
 
         jButton1.setText("Submit");
+        jButton1.setEnabled(false);
 
         jButton2.setText("Reset");
         jButton2.addActionListener(new java.awt.event.ActionListener() {

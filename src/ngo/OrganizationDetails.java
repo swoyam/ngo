@@ -8,7 +8,9 @@ package ngo;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import ngo.model.Dashboard;
+import ngo.model.Organization;
 import ngo.utils.GeneralUtils;
+import ngo.utils.Message;
 
 /**
  *
@@ -102,12 +104,14 @@ public class OrganizationDetails extends javax.swing.JFrame {
         telephoneNoLabel = new javax.swing.JLabel();
         sectorLabel = new javax.swing.JLabel();
         asterisk2 = new javax.swing.JLabel();
-        Delete = new javax.swing.JButton();
-        Update = new javax.swing.JButton();
         sectorTextField = new javax.swing.JTextField();
+        additionalDetailsButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         closeMenu = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        editMenuItem = new javax.swing.JMenuItem();
+        deleteMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -128,6 +132,7 @@ public class OrganizationDetails extends javax.swing.JFrame {
 
         hodLabel.setText("Head of Organization");
 
+        orgNameTxtField.setBackground(java.awt.SystemColor.window);
         orgNameTxtField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 orgNameTxtFieldActionPerformed(evt);
@@ -140,20 +145,10 @@ public class OrganizationDetails extends javax.swing.JFrame {
 
         asterisk2.setForeground(new java.awt.Color(246, 9, 9));
 
-        Delete.setText("Delete");
-        Delete.setToolTipText("Delete");
-        Delete.addActionListener(new java.awt.event.ActionListener() {
+        additionalDetailsButton.setText("Additional Details");
+        additionalDetailsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DeleteActionPerformed(evt);
-            }
-        });
-
-        Update.setText("Edit");
-        Update.setToolTipText("Edit");
-        Update.setSelected(true);
-        Update.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UpdateActionPerformed(evt);
+                additionalDetailsButtonActionPerformed(evt);
             }
         });
 
@@ -162,9 +157,9 @@ public class OrganizationDetails extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(orgNameLabel)
                             .addComponent(addressLabel)
@@ -191,17 +186,13 @@ public class OrganizationDetails extends javax.swing.JFrame {
                             .addComponent(sectorTextField)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(Delete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Update, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(additionalDetailsButton)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Update)
-                    .addComponent(Delete))
+                .addComponent(additionalDetailsButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(orgNameLabel)
@@ -255,6 +246,28 @@ public class OrganizationDetails extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu2.setText("Edit");
+
+        editMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK));
+        editMenuItem.setText("Edit");
+        editMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu2.add(editMenuItem);
+
+        deleteMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK));
+        deleteMenuItem.setText("Delete");
+        deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu2.add(deleteMenuItem);
+
+        jMenuBar1.add(jMenu2);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -277,24 +290,6 @@ public class OrganizationDetails extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
-        String message = "All the information for this organization will be deleted. \nAre you sure you want to delete?";
-        int answer = JOptionPane.showConfirmDialog(this, message, "Delete Organization", 0);
-        if (answer == JOptionPane.YES_OPTION) {
-            // User clicked YES.
-        } else if (answer == JOptionPane.NO_OPTION) {
-            // User clicked NO.
-        }
-    }//GEN-LAST:event_DeleteActionPerformed
-
-    private void UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateActionPerformed
-        // TODO add your handling code here:
-        AddOrganization addOrganization = new AddOrganization();
-        addOrganization.setVisible(true);
-        addOrganization.setValues(new Dashboard().getOrganization(this.office_id));
-        this.dispose();
-    }//GEN-LAST:event_UpdateActionPerformed
-
     private void closeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeMenuActionPerformed
         this.dispose();
     }//GEN-LAST:event_closeMenuActionPerformed
@@ -302,6 +297,33 @@ public class OrganizationDetails extends javax.swing.JFrame {
     private void orgNameTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orgNameTxtFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_orgNameTxtFieldActionPerformed
+
+    private void editMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editMenuItemActionPerformed
+        AddOrganization addOrganization = new AddOrganization();
+        addOrganization.setVisible(true);
+        addOrganization.setValues(new Dashboard().getOrganization(this.office_id));
+        this.dispose();
+    }//GEN-LAST:event_editMenuItemActionPerformed
+
+    private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuItemActionPerformed
+        String message = "All the information for this organization will be deleted. \nAre you sure you want to delete?";
+        int answer = JOptionPane.showConfirmDialog(this, message, "Delete Organization", 0);
+
+        if (answer == JOptionPane.YES_OPTION) {
+            this.setVisible(false);
+            Message deleteMessage = Organization.deleteOrganization(this.office_id);
+            JOptionPane.showMessageDialog(this,
+                    deleteMessage.getMessage(),
+                    "Message",
+                    JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+        }
+    }//GEN-LAST:event_deleteMenuItemActionPerformed
+
+    private void additionalDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_additionalDetailsButtonActionPerformed
+        QuestionsForm form = new QuestionsForm(office_id, QuestionsForm.Type.VIEW);
+        form.setVisible(true);
+    }//GEN-LAST:event_additionalDetailsButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -317,19 +339,21 @@ public class OrganizationDetails extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Delete;
-    private javax.swing.JButton Update;
+    private javax.swing.JButton additionalDetailsButton;
     private javax.swing.JLabel addressLabel;
     private javax.swing.JTextField addressTxtField;
     private javax.swing.JLabel asterisk2;
     private javax.swing.JLabel chairPersonLabel;
     private javax.swing.JTextField chairPersonTxtField;
     private javax.swing.JMenuItem closeMenu;
+    private javax.swing.JMenuItem deleteMenuItem;
+    private javax.swing.JMenuItem editMenuItem;
     private javax.swing.JLabel emailAddLabel;
     private javax.swing.JTextField emailTextField;
     private javax.swing.JLabel hodLabel;
     private javax.swing.JTextField hodTxtField;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel mobileNumberLabel;
