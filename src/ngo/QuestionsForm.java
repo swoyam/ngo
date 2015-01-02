@@ -184,7 +184,7 @@ public class QuestionsForm extends javax.swing.JFrame {
         editMenu.add(editAnswersDetailsItem);
 
         jMenuBar1.add(fileMenu);
-        if (formType.equals(Type.EDIT)) {
+        if (formType.equals(Type.VIEW)) {
             jMenuBar1.add(editMenu);
         }
 
