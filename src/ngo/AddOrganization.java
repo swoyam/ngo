@@ -13,7 +13,6 @@ import java.util.TreeMap;
 import java.util.Vector;
 import javax.swing.ComboBoxModel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import ngo.model.Dashboard;
 import ngo.utils.Message;
 
@@ -185,12 +184,12 @@ public class AddOrganization extends javax.swing.JFrame {
                                 .addComponent(asterisk4, javax.swing.GroupLayout.PREFERRED_SIZE, 7, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(36, 36, 36)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(telephoneTxtField, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
-                            .addComponent(mobileTxtField, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
-                            .addComponent(emailTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
-                            .addComponent(websiteTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
-                            .addComponent(chairPersonTxtField, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
-                            .addComponent(hodTxtField, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
+                            .addComponent(telephoneTxtField)
+                            .addComponent(mobileTxtField)
+                            .addComponent(emailTextField)
+                            .addComponent(websiteTextField)
+                            .addComponent(chairPersonTxtField)
+                            .addComponent(hodTxtField)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(sectorComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
@@ -202,26 +201,29 @@ public class AddOrganization extends javax.swing.JFrame {
                         .addComponent(asterisk5, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(info2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 357, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(resetButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(addOrganizationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addOrganizationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(info1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(asterisk5)
-                            .addComponent(info2))))
-                .addGap(8, 8, 8)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(info1)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(2, 2, 2)
+                                .addComponent(asterisk5)))
+                        .addGap(8, 8, 8))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(info2)
+                        .addGap(18, 18, 18)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(orgNameLabel)
                     .addComponent(orgNameTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -296,7 +298,7 @@ public class AddOrganization extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(130, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         pack();
