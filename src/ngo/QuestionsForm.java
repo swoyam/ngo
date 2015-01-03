@@ -66,7 +66,7 @@ public class QuestionsForm extends javax.swing.JFrame {
         editAnswersDetailsItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Additional Questions");
+        setTitle("Additional Details");
 
         title.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         title.setForeground(new java.awt.Color(16, 59, 16));

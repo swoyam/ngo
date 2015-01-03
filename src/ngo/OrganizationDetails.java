@@ -132,7 +132,6 @@ public class OrganizationDetails extends javax.swing.JFrame {
 
         hodLabel.setText("Head of Organization");
 
-        orgNameTxtField.setBackground(java.awt.SystemColor.window);
         orgNameTxtField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 orgNameTxtFieldActionPerformed(evt);
@@ -284,7 +283,7 @@ public class OrganizationDetails extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
