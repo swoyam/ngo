@@ -11,6 +11,7 @@ import java.util.TreeMap;
 import java.util.Vector;
 import javax.swing.ComboBoxModel;
 import ngo.model.Dashboard;
+import ngo.utils.GeneralUtils;
 
 /**
  *
@@ -24,6 +25,7 @@ public class EditOrganization extends javax.swing.JFrame {
      * Creates new form ViewOrganization
      */
     public EditOrganization() {
+        GeneralUtils.setUILookAndFeel(this);
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
