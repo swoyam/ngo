@@ -6,7 +6,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ngo.utils.Message;
@@ -35,21 +34,6 @@ public class LicenseValidator {
         public int getDays() {
             return days;
         }
-
-    }
-
-    public static void main(String[] args) {
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter User Name: ");
-        String userName = scanner.nextLine();
-
-        System.out.println("month");
-        System.out.println(generateLicenseKey(userName, ValidityPeriod.MONTHLY));
-        System.out.println("year");
-        System.out.println(generateLicenseKey(userName, ValidityPeriod.YEARLY));
-        System.out.println("perpetual");
-        System.out.println(generateLicenseKey(userName, ValidityPeriod.PERPETUAL));
 
     }
 
