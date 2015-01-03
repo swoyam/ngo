@@ -44,6 +44,8 @@ public class HomePage extends javax.swing.JFrame {
     public HomePage(String message) {
         initComponents();
         
+        setTitle("NGO Federation of Nepal");
+        setResizable(false);
         GeneralUtils.setUILookAndFeel(this);
         
         licenseDesc.setText(message);
@@ -59,7 +61,7 @@ public class HomePage extends javax.swing.JFrame {
                 int selRow = jTree1.getRowForLocation(e.getX(), e.getY());
                 MyDefaultTreeNode selectedNode = (MyDefaultTreeNode) jTree1.getLastSelectedPathComponent();
                 if (selRow != -1) {
-                    if (e.getClickCount() == 2 && selectedNode.isLeaf()) {
+                    if (e.getClickCount() == 2 && selectedNode.isLeaf() && selectedNode.userId != null) {
                         OrganizationDetails orgDetails = new OrganizationDetails(selectedNode.userId);
                         orgDetails.setVisible(true);
 
