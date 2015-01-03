@@ -74,6 +74,14 @@ public class LicenseValidator {
     }
 
     private Message insertLicenseToDb(String username, String licenseKey) {
+
+        ArrayList<Users> userInfoList = new Users().getLicenseInfo();
+        for (Users userInfo : userInfoList) {
+            if(userInfo.getLicenseKey().equals(licenseKey)){
+                return new Message(false, "License Key already used. Please enter a new one.");
+            }
+        }
+
         Users userInfo = new Users();
         userInfo.setUserName(username);
         userInfo.setLicenseKey(licenseKey);
@@ -85,7 +93,7 @@ public class LicenseValidator {
         userInfo.setEndDate(validityObj.getToDate());
 
         Message message = userInfo.insertLicense();
-        
+
         return message;
     }
 
@@ -93,7 +101,7 @@ public class LicenseValidator {
 
         ArrayList<Users> userInfoList = new Users().getLicenseInfo();
         System.out.println("userInfoList = " + userInfoList);
-        
+
         if (userInfoList == null || userInfoList.size() == 0) {
             return new Message(false, LicenseValidationError.DOES_NOT_EXIST.getMessage());
         } else {
