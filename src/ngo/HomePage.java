@@ -205,8 +205,8 @@ public class HomePage extends javax.swing.JFrame {
 
         jLabel1.setText("Sectoral");
 
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
-        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jTree1.setAutoscrolls(true);
+        jTree1.setRootVisible(false);
         jScrollPane2.setViewportView(jTree1);
 
         searchBox.setEditable(true);
