@@ -24,7 +24,7 @@ public class Dashboard {
     public TreeMap getSectors() {
 
         SqliteJDBC sqliteJDBC = new SqliteJDBC();
-        TreeMap<Integer, String> result = new TreeMap<>();
+        TreeMap<Integer, String> result = new TreeMap<Integer, String>();
 
         Statement stmt = null;
         try {
@@ -58,7 +58,7 @@ public class Dashboard {
 
         SqliteJDBC sqliteJDBC = new SqliteJDBC();
 
-        TreeMap<String, TreeMap<Integer, String>> result = new TreeMap<>();
+        TreeMap<String, TreeMap<Integer, String>> result = new TreeMap<String, TreeMap<Integer, String>>();
         Statement stmt = null;
         try {
             Connection c = sqliteJDBC.getSqliteConnection();
@@ -75,7 +75,9 @@ public class Dashboard {
                     result.put(sectorName, new TreeMap<Integer, String>());
                 }
 
-                result.get(sectorName).put(officeId, officeName);
+                if (officeId != 0 && officeName != null) {
+                    result.get(sectorName).put(officeId, officeName);
+                }
             }
 
             rs.close();
@@ -95,13 +97,13 @@ public class Dashboard {
         SqliteJDBC sqliteJDBC = new SqliteJDBC();
 
         Vector<String> resultVector = new Vector<String>();
-        
+
         Statement stmt = null;
         try {
             Connection c = sqliteJDBC.getSqliteConnection();
             stmt = c.createStatement();
 
-            ResultSet rs = stmt.executeQuery("SELECT organization.office_id, organization.office_name FROM organization WHERE office_name LIKE '%"+queryWord+"%'");
+            ResultSet rs = stmt.executeQuery("SELECT organization.office_id, organization.office_name FROM organization WHERE office_name LIKE '%" + queryWord + "%'");
             while (rs.next()) {
 
                 Integer officeId = rs.getInt("office_id");
@@ -122,19 +124,18 @@ public class Dashboard {
         return resultVector;
     }
 
-    
     public Vector<Item> getMatchingOrganizationsIdName(String queryWord) {
 
         SqliteJDBC sqliteJDBC = new SqliteJDBC();
 
         Vector<Item> resultVector = new Vector<Item>();
-        
+
         Statement stmt = null;
         try {
             Connection c = sqliteJDBC.getSqliteConnection();
             stmt = c.createStatement();
 
-            ResultSet rs = stmt.executeQuery("SELECT organization.office_id, organization.office_name FROM organization WHERE office_name LIKE '%"+queryWord+"%'");
+            ResultSet rs = stmt.executeQuery("SELECT organization.office_id, organization.office_name FROM organization WHERE office_name LIKE '%" + queryWord + "%'");
             while (rs.next()) {
 
                 Integer officeId = rs.getInt("office_id");
@@ -154,8 +155,7 @@ public class Dashboard {
         System.out.println("Operation completed successfully");
         return resultVector;
     }
-    
-    
+
     public Map<String, Object> getOrganization(Object office_id) {
         Statement stmt = null;
         Map<String, Object> valueMap = new HashMap<String, Object>();
@@ -188,6 +188,5 @@ public class Dashboard {
         }
         return valueMap;
     }
-    
-    
+
 }
