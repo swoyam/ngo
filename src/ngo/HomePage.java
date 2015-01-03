@@ -34,20 +34,20 @@ public class HomePage extends javax.swing.JFrame {
     private boolean hide_flag = false;
     String[] defaultMessageForSearchBox = {"Type text to search."};
 
-    
     public HomePage() {
         this("");
     }
+
     /**
      * Creates new form HomePage
      */
     public HomePage(String message) {
         initComponents();
-        
+
         setTitle("NGO Federation of Nepal");
         setResizable(false);
         GeneralUtils.setUILookAndFeel(this);
-        
+
         licenseDesc.setText(message);
         setLocationRelativeTo(null);
         jTree1.setRootVisible(false);
@@ -201,10 +201,11 @@ public class HomePage extends javax.swing.JFrame {
         title.setForeground(new java.awt.Color(16, 59, 16));
         title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         title.setText("NGO Federation of Nepal  Kaski");
-        title.setBorder(null);
 
         jLabel1.setText("Sectoral");
 
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
+        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         jTree1.setAutoscrolls(true);
         jTree1.setRootVisible(false);
         jScrollPane2.setViewportView(jTree1);
