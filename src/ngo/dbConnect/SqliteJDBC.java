@@ -47,6 +47,8 @@ public class SqliteJDBC {
     }
 
     public Message initiateApplicationDatabase() {
+
+        // todo - check from database if the initial tables has been initiated.
         Statement stmt = null;
         try {
             Connection c = getSqliteConnection();
@@ -118,6 +120,7 @@ public class SqliteJDBC {
             stmt.close();
             c.close();
         } catch (SQLException ex) {
+            ex.printStackTrace();
             Logger.getLogger(SqliteJDBC.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
             System.exit(0);
@@ -125,18 +128,18 @@ public class SqliteJDBC {
 
         if (getCount("sector", "sector_id") == 0) {
             if (!insertIntoSector()) {
-                return new Message(true, "Sectors cannot be initiated");
+                return new Message(false, "Sectors cannot be initiated");
             }
         }
 
         if (getCount("question_category", "q_category_id") == 0) {
             if (!insertIntoQuestionCategory()) {
-                return new Message(true, "Question Category cannot be initiated");
+                return new Message(false, "Question Category cannot be initiated");
             }
         }
         if (getCount("questions", "q_id") == 0) {
             if (!insertIntoQuestions()) {
-                return new Message(true, "Questions cannot be initiated");
+                return new Message(false, "Questions cannot be initiated");
             }
         }
 
@@ -145,6 +148,7 @@ public class SqliteJDBC {
     }
 
     public int getCount(String table, String id) {
+        System.out.println("Getting Count for " + table);
         PreparedStatement stmt = null;
         int count = 0;
 
@@ -162,6 +166,7 @@ public class SqliteJDBC {
             c.close();
 
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
@@ -179,10 +184,10 @@ public class SqliteJDBC {
             for (int i = 0; i < sectors.length; i++) {
                 String sector = sectors[i];
                 String sql = "INSERT INTO sector('sector_name', 'sector_desc') VALUES (?,?);";
+                stmt = c.prepareStatement(sql);
                 stmt.setString(1, sector);
                 stmt.setString(2, sector);
-                stmt = c.prepareStatement(sql);
-                stmt.executeUpdate(sql);
+                stmt.executeUpdate();
             }
 
             stmt.close();
@@ -190,10 +195,11 @@ public class SqliteJDBC {
             c.close();
 
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Records created successfully");
+        System.out.println("Sectors Initiated");
         return true;
     }
 
@@ -217,11 +223,12 @@ public class SqliteJDBC {
             c.commit();
             c.close();
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             JOptionPane.showMessageDialog(null, e);
             return false;
         }
-        System.out.println("Record inserted successfully");
+        System.out.println("Question Category Initiated");
         return true;
     }
 
@@ -255,7 +262,7 @@ public class SqliteJDBC {
                     stmt = c.prepareStatement(sql);
                     stmt.setString(1, question);
                     stmt.setInt(2, qId);
-                    System.out.println("sql" + sql);
+                    
                     stmt.executeUpdate();
                 }
             }
@@ -270,7 +277,7 @@ public class SqliteJDBC {
             JOptionPane.showMessageDialog(null, e);
             return false;
         }
-        System.out.println("Record inserted successfully");
+        System.out.println("Questions Inititated");
         return true;
     }
 }
