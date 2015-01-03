@@ -21,7 +21,7 @@ import ngo.dbConnect.SqliteJDBC;
  */
 public class Dashboard {
 
-    public TreeMap getSectors() {
+    public TreeMap<Integer, String> getSectors() {
 
         SqliteJDBC sqliteJDBC = new SqliteJDBC();
         TreeMap<Integer, String> result = new TreeMap<Integer, String>();
@@ -177,6 +177,7 @@ public class Dashboard {
                 valueMap.put("head_of_org", rs.getString("head_of_org"));
                 valueMap.put("office_id", rs.getString("office_id"));
                 valueMap.put("sector_name", rs.getString("sector_name"));
+                valueMap.put("sector_id", rs.getString("sector_id"));
             }
             rs.close();
             stmt.close();
