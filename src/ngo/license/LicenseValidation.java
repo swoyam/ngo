@@ -28,14 +28,13 @@ public class LicenseValidation extends javax.swing.JFrame {
      */
     public LicenseValidation(String message) {
 
+        setLocationRelativeTo(null);
         this.message = message;
-
+        setResizable(false);
         initComponents();
-
         GeneralUtils.setUILookAndFeel(this);
 
         licenseLabel.setText(this.message);
-        setLocationRelativeTo(null);
         new TextPrompt("User Name", userNameTextField);
     }
 
@@ -60,8 +59,6 @@ public class LicenseValidation extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("License Key Validation");
-
-        jPanel1.setBorder(null);
 
         jLabel1.setText("Please Enter License Key Below");
 
@@ -133,7 +130,7 @@ public class LicenseValidation extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(validateButton)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -144,7 +141,7 @@ public class LicenseValidation extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
