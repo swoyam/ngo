@@ -443,18 +443,22 @@ public class AddOrganization extends javax.swing.JFrame {
     
     
     public void setValues(Map<String, Object> valueMap) {
-        System.out.println("valueMap" + valueMap);
+        //System.out.println("valueMap" + valueMap);
+        
         this.orgNameTxtField.setText(valueMap.get("officeName").toString());
-        this.addressTxtField.setText(valueMap.get("address").toString());
         this.websiteTextField.setText(valueMap.get("website").toString());
+        this.emailTextField.setText(valueMap.get("email").toString());
+        this.addressTxtField.setText(valueMap.get("address").toString());
         this.telephoneTxtField.setText(valueMap.get("telephone_no").toString());
         this.mobileTxtField.setText(valueMap.get("mobile_number").toString());
         this.chairPersonTxtField.setText(valueMap.get("chair_person").toString());
         this.hodTxtField.setText(valueMap.get("head_of_org").toString());
-        this.addOrganizationButton.setText("Update");
+        this.sectorComboBox.setSelectedIndex(getIndexOfSelectedSector(valueMap.get("sector_name")));
         this.sectorComboBox.setEnabled(true);
-        this.isAdd = false;
+        
         this.org_id = Integer.parseInt(valueMap.get("office_id").toString());
+        this.isAdd = false;
+        this.addOrganizationButton.setText("Update");
     }
 
 
@@ -491,4 +495,16 @@ public class AddOrganization extends javax.swing.JFrame {
     private javax.swing.JLabel websiteNameLabel;
     private javax.swing.JTextField websiteTextField;
     // End of variables declaration//GEN-END:variables
+
+    private int getIndexOfSelectedSector(Object inputSectorName) {
+        TreeMap<Integer, String> sectorsIdNameMap = new Dashboard().getSectors();
+        int position = 0;
+        for(String sectorNameFromDb : sectorsIdNameMap.values()) {
+            if(sectorNameFromDb.equals(inputSectorName.toString())){
+            return position;
+            }
+            position++;
+        }
+        return position;
+    }
 }
