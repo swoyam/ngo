@@ -137,7 +137,7 @@
           <Color blue="10" green="3b" red="10" type="rgb"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="NGO Federation of Nepal  Kaski"/>
+        <Property name="text" type="java.lang.String" value="NGO Federation of Nepal, Kaski"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">

@@ -118,8 +118,7 @@ public class SearchResultPage extends javax.swing.JFrame {
         title.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         title.setForeground(new java.awt.Color(16, 59, 16));
         title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        title.setText("NGO Federation of Nepal  Kaski");
-        title.setBorder(null);
+        title.setText("NGO Federation of Nepal, Kaski");
 
         jMenu1.setText("File");
 

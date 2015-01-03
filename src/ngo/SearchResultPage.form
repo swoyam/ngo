@@ -156,10 +156,7 @@
           <Color blue="10" green="3b" red="10" type="rgb"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="NGO Federation of Nepal  Kaski"/>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="null"/>
-        </Property>
+        <Property name="text" type="java.lang.String" value="NGO Federation of Nepal, Kaski"/>
       </Properties>
     </Component>
   </SubComponents>
