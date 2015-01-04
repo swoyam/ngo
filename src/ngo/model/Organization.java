@@ -5,11 +5,13 @@
  */
 package ngo.model;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ngo.dbConnect.SqliteJDBC;
@@ -31,6 +33,15 @@ public class Organization {
     private String chairPerson;
     private String headOfOrg;
     private String sectorId;
+    private String sectorName;
+
+    public String getSectorName() {
+        return sectorName;
+    }
+
+    public void setSectorName(String sectorName) {
+        this.sectorName = sectorName;
+    }
 
     public String getOfficeName() {
         return officeName;
@@ -118,7 +129,7 @@ public class Organization {
      * query execution and object.message -> auto generated key for inserted row
      */
     public Message insertIntoOrganization() {
-        
+
         Connection c = null;
         PreparedStatement stmt = null;
         int officeId = 0;
@@ -131,7 +142,7 @@ public class Organization {
                     + "         VALUES (?,?,?,?,?,?,?,?,?);";
             System.out.println("sql = " + sql);
             stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            
+
             stmt.setString(1, officeName);
             stmt.setString(2, address);
             stmt.setString(3, website);
@@ -141,7 +152,7 @@ public class Organization {
             stmt.setString(7, chairPerson);
             stmt.setString(8, headOfOrg);
             stmt.setString(9, sectorId);
-            
+
             stmt.executeUpdate();
 
             ResultSet keys = stmt.getGeneratedKeys();
@@ -151,14 +162,13 @@ public class Organization {
             stmt.close();
             c.commit();
             c.close();
-            
 
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return new Message(false, String.valueOf(officeId));
         }
-        
+
         return new Message(true, String.valueOf(officeId));
     }
 
@@ -179,7 +189,7 @@ public class Organization {
                     + "chair_person=?, "
                     + "head_of_org=?, "
                     + "sector_sector_id=? where office_id=?";
-            
+
             stmt = c.prepareStatement(sql);
             stmt.setString(1, officeName);
             stmt.setString(2, address);
@@ -191,7 +201,7 @@ public class Organization {
             stmt.setString(8, headOfOrg);
             stmt.setString(9, sectorId);
             stmt.setInt(10, office_id);
-            
+
             stmt.executeUpdate();
 
             stmt.close();
@@ -203,7 +213,7 @@ public class Organization {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
-        
+
         return true;
     }
 
@@ -243,5 +253,56 @@ public class Organization {
 
         return returnMessage;
     }
+    
+    public Organization(){
+    }
 
+    public Organization(int orgId) {
+        getOrganizationFromId(orgId);
+    }
+
+    public void getOrganizationFromId(int officeId) {
+
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Connection connection = null;
+
+        try {
+            connection = new SqliteJDBC().getSqliteConnection();
+            connection.setAutoCommit(false);
+
+            String sql = "SELECT * FROM organization LEFT JOIN sector ON organization.sector_sector_id = sector.sector_id where office_id=?;";
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, officeId);
+
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                this.officeName = rs.getString("office_name");
+                this.website = rs.getString("website");
+                this.email = rs.getString("email");
+                this.address = rs.getString("address");
+                this.telephoneNo = rs.getString("telephone_no");
+                this.mobileNo = rs.getString("mobile_number");
+                this.chairPerson = rs.getString("chair_person");
+                this.headOfOrg = rs.getString("head_of_org");
+                this.officeId = rs.getInt("office_id");
+                this.sectorName = rs.getString("sector_name");
+                this.sectorId = rs.getString("sector_id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+                connection.commit();
+                connection.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 }
