@@ -6,6 +6,7 @@
 package ngo.model;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.TreeMap;
@@ -24,12 +25,13 @@ public class Questions {
 
         TreeMap<Integer, TreeMap<Integer, String>> result = new TreeMap<Integer, TreeMap<Integer, String>>();
 
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             Connection c = sqliteJDBC.getSqliteConnection();
-            stmt = c.createStatement();
+            String sql = "SELECT * FROM questions;";
+            stmt = c.prepareStatement(sql);
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM questions;");
+            ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
 
                 Integer questionId = rs.getInt("q_id");
@@ -59,12 +61,14 @@ public class Questions {
         SqliteJDBC sqliteJDBC = new SqliteJDBC();
 
         String result = "";
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             Connection c = sqliteJDBC.getSqliteConnection();
-            stmt = c.createStatement();
+            String sql = "SELECT qc.q_category_desc FROM question_category qc where qc.q_category_id = ?";
+            stmt = c.prepareStatement(sql);
+            stmt.setInt(1, categoryId);
 
-            ResultSet rs = stmt.executeQuery("SELECT qc.q_category_desc FROM question_category qc where qc.q_category_id = '" + categoryId + "'");
+            ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 result = rs.getString("q_category_desc");
             }
@@ -80,60 +84,7 @@ public class Questions {
         return result;
     }
 
-    //ToDo get organisation id from form. 
-    public boolean insertAnswer(TreeMap<Integer, JEditorPane> answers) {
-
-        SqliteJDBC sqliteJDBC = new SqliteJDBC();
-        Statement stmt = null;
-        try {
-            Connection c = sqliteJDBC.getSqliteConnection();
-            c.setAutoCommit(false);
-            for (Integer qId : answers.keySet()) {
-                stmt = c.createStatement();
-                String answer = answers.get(qId).getText();
-                stmt.executeUpdate("Insert into answers ('answer','questions_q_id','organization_office_id') values " + "('" + answer + "', " + qId + ", " + 1 + ")");
-            }
-
-            stmt.close();
-            c.commit();
-            c.setAutoCommit(true);
-            c.close();
-
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return false;
-        }
-        System.out.println("Record inserted successfully");
-        return true;
-    }
     
-    //ToDo get organisation id from form. 
-    public boolean updateAnswer(TreeMap<Integer, JEditorPane> answers) {
-
-        SqliteJDBC sqliteJDBC = new SqliteJDBC();
-        Statement stmt = null;
-        try {
-            Connection c = sqliteJDBC.getSqliteConnection();
-            c.setAutoCommit(false);
-            for (Integer qId : answers.keySet()) {
-                stmt = c.createStatement();
-                String answer = answers.get(qId).getText();
-                stmt.executeUpdate("update answers set 'answer' = '"+ answer+"'" +"where question_q_id="+qId+" and organization_office_id=1");
-            }
-
-            stmt.close();
-            c.commit();
-            c.setAutoCommit(true);
-            c.close();
-
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return false;
-        }
-        System.out.println("Record inserted successfully");
-        return true;
-    }
-
     public TreeMap<Integer, String> getAnswerForOfficeId(Integer organizationId) {
         TreeMap<Integer, String> result = new TreeMap<Integer, String>();
 

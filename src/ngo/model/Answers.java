@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,7 +70,7 @@ public class Answers {
             connection.setAutoCommit(false);
 
             String sql = "SELECT * FROM Answers where organization_office_id=?;";
-            connection.prepareStatement(sql);
+            stmt = connection.prepareStatement(sql);
             stmt.setInt(1, officeId);
 
             rs = stmt.executeQuery();
