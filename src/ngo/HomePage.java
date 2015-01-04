@@ -202,7 +202,7 @@ public class HomePage extends javax.swing.JFrame {
         title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         title.setText("NGO Federation of Nepal, Kaski");
 
-        jLabel1.setText("Sectoral");
+        jLabel1.setText("Sectorial");
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
         jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
