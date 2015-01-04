@@ -36,12 +36,12 @@ public class OrganizationDetails extends javax.swing.JFrame {
         setResizable(false);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setValues(new Dashboard().getOrganization(officeId));
+        setValues(new Organization(officeId));
         this.office_id = officeId;
 
     }
 
-    public void setValues(Map<String, Object> valueMap) {
+    public void setValues(Organization orgDetails) {
         this.orgNameTxtField.setEditable(false);
         this.addressTxtField.setEditable(false);
         this.websiteTextField.setEditable(false);
@@ -52,27 +52,17 @@ public class OrganizationDetails extends javax.swing.JFrame {
         this.hodTxtField.setEditable(false);
         this.sectorTextField.setEditable(false);
 
-        String officeName = valueMap.containsKey("officeName") ? valueMap.get("officeName").toString() : "";
-        String address = valueMap.containsKey("address") ? valueMap.get("address").toString() : "";
-        String website = valueMap.containsKey("website") ? valueMap.get("website").toString() : "";
-        String email = valueMap.containsKey("email") ? valueMap.get("email").toString() : "";
-        String telNo = valueMap.containsKey("telephone_no") ? valueMap.get("telephone_no").toString() : "";
-        String mobNo = valueMap.containsKey("mobile_number") ? valueMap.get("mobile_number").toString() : "";
-        String chairPerson = valueMap.containsKey("chair_person") ? valueMap.get("chair_person").toString() : "";
-        String headOfOrg = valueMap.containsKey("head_of_org") ? valueMap.get("head_of_org").toString() : "";
-        String sectorName = valueMap.containsKey("sector_name") ? valueMap.get("sector_name").toString() : "";
+        setTitle("Organization Details: " + orgDetails.getOfficeName());
 
-        setTitle("Organization Details: " + officeName);
-
-        this.orgNameTxtField.setText(officeName);
-        this.addressTxtField.setText(address);
-        this.websiteTextField.setText(website);
-        this.emailTextField.setText(email);
-        this.telephoneTxtField.setText(telNo);
-        this.mobileTxtField.setText(mobNo);
-        this.chairPersonTxtField.setText(chairPerson);
-        this.hodTxtField.setText(headOfOrg);
-        this.sectorTextField.setText(sectorName);
+        this.orgNameTxtField.setText(orgDetails.getOfficeName());
+        this.addressTxtField.setText(orgDetails.getAddress());
+        this.websiteTextField.setText(orgDetails.getWebsite());
+        this.emailTextField.setText(orgDetails.getEmail());
+        this.telephoneTxtField.setText(orgDetails.getTelephoneNo());
+        this.mobileTxtField.setText(orgDetails.getMobileNo());
+        this.chairPersonTxtField.setText(orgDetails.getChairPerson());
+        this.hodTxtField.setText(orgDetails.getHeadOfOrg());
+        this.sectorTextField.setText(orgDetails.getSectorName());
 
     }
 
@@ -300,7 +290,7 @@ public class OrganizationDetails extends javax.swing.JFrame {
     private void editMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editMenuItemActionPerformed
         AddOrganization addOrganization = new AddOrganization();
         addOrganization.setVisible(true);
-        addOrganization.setValues(new Dashboard().getOrganization(this.office_id));
+        addOrganization.setValues(new Organization(this.office_id));
         this.dispose();
     }//GEN-LAST:event_editMenuItemActionPerformed
 

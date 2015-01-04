@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import ngo.model.Answers;
+import ngo.model.Organization;
 import ngo.model.Questions;
 
 /**
@@ -32,6 +33,7 @@ public class QuestionsForm extends javax.swing.JFrame {
         this(0, Type.VIEW);
     }
 
+    private Organization organizationInfo;
     private Type formType;
     private int officeId;
 
@@ -41,6 +43,7 @@ public class QuestionsForm extends javax.swing.JFrame {
     public QuestionsForm(int officeId, QuestionsForm.Type type) {
         this.officeId = officeId;
         this.formType = type;
+        this.organizationInfo = new Organization(officeId);
         questionIdAnswersMap = new Questions().getAnswerForOfficeId(officeId);
 
         initComponents();
@@ -66,12 +69,13 @@ public class QuestionsForm extends javax.swing.JFrame {
         editAnswersDetailsItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Additional Details");
+        
+        setTitle("Additional Details: " + organizationInfo.getOfficeName());
 
         title.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         title.setForeground(new java.awt.Color(16, 59, 16));
         title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        title.setText("NGO Federation of Nepal  Kaski");
+        title.setText("NGO Federation of Nepal, Kaski");
         title.setBorder(null);
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder("Additional Questions"));

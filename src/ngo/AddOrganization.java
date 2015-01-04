@@ -346,8 +346,6 @@ public class AddOrganization extends javax.swing.JFrame {
             return;
         }
 
-        
-        
         String sectorId = Integer.toString(((Item) sectorComboBox.getSelectedItem()).getId());
 
         Organization organization = new Organization();
@@ -442,21 +440,21 @@ public class AddOrganization extends javax.swing.JFrame {
 
     
     
-    public void setValues(Map<String, Object> valueMap) {
+    public void setValues(Organization organizationDetail) {
         //System.out.println("valueMap" + valueMap);
         
-        this.orgNameTxtField.setText(valueMap.get("officeName").toString());
-        this.websiteTextField.setText(valueMap.get("website").toString());
-        this.emailTextField.setText(valueMap.get("email").toString());
-        this.addressTxtField.setText(valueMap.get("address").toString());
-        this.telephoneTxtField.setText(valueMap.get("telephone_no").toString());
-        this.mobileTxtField.setText(valueMap.get("mobile_number").toString());
-        this.chairPersonTxtField.setText(valueMap.get("chair_person").toString());
-        this.hodTxtField.setText(valueMap.get("head_of_org").toString());
-        this.sectorComboBox.setSelectedIndex(getIndexOfSelectedSector(valueMap.get("sector_name")));
+        this.orgNameTxtField.setText(organizationDetail.getOfficeName());
+        this.websiteTextField.setText(organizationDetail.getWebsite());
+        this.emailTextField.setText(organizationDetail.getEmail());
+        this.addressTxtField.setText(organizationDetail.getAddress());
+        this.telephoneTxtField.setText(organizationDetail.getTelephoneNo());
+        this.mobileTxtField.setText(organizationDetail.getMobileNo());
+        this.chairPersonTxtField.setText(organizationDetail.getChairPerson());
+        this.hodTxtField.setText(organizationDetail.getHeadOfOrg());
+        this.sectorComboBox.setSelectedIndex(getIndexOfSelectedSector(organizationDetail.getSectorName()));
         this.sectorComboBox.setEnabled(true);
         
-        this.org_id = Integer.parseInt(valueMap.get("office_id").toString());
+        this.org_id = organizationDetail.getOfficeId();
         this.isAdd = false;
         this.addOrganizationButton.setText("Update");
     }
@@ -496,11 +494,11 @@ public class AddOrganization extends javax.swing.JFrame {
     private javax.swing.JTextField websiteTextField;
     // End of variables declaration//GEN-END:variables
 
-    private int getIndexOfSelectedSector(Object inputSectorName) {
+    private int getIndexOfSelectedSector(String inputSectorName) {
         TreeMap<Integer, String> sectorsIdNameMap = new Dashboard().getSectors();
         int position = 0;
         for(String sectorNameFromDb : sectorsIdNameMap.values()) {
-            if(sectorNameFromDb.equals(inputSectorName.toString())){
+            if(sectorNameFromDb.equals(inputSectorName)){
             return position;
             }
             position++;

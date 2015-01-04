@@ -11,6 +11,7 @@ import java.util.TreeMap;
 import java.util.Vector;
 import javax.swing.ComboBoxModel;
 import ngo.model.Dashboard;
+import ngo.model.Organization;
 import ngo.utils.GeneralUtils;
 
 /**
@@ -291,7 +292,7 @@ public class EditOrganization extends javax.swing.JFrame {
         // TODO add your handling code here:
         AddOrganization addOrganization = new AddOrganization();
         addOrganization.setVisible(true);
-        addOrganization.setValues(new Dashboard().getOrganization(this.office_id));
+        addOrganization.setValues(new Organization(this.office_id));
         this.dispose();
     }//GEN-LAST:event_UpdateActionPerformed
 
