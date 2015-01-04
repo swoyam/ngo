@@ -6,6 +6,7 @@
 package ngo.model;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -85,15 +86,22 @@ public class Users {
     }
 
     public Message insertLicense() {
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         String insertValues = getInsertValues();
         try {
             Connection c = new SqliteJDBC().getSqliteConnection();
             c.setAutoCommit(false);
-            stmt = c.createStatement();
-
-            String sql = "INSERT INTO Users('" + USERNAME + "', '" + LICENSE_KEY + "', '" + START_DATE + "', '" + END_DATE + "', '" + LICENSE_TYPE + "') VALUES (" + insertValues + ");";
-            stmt.executeUpdate(sql);
+            
+            String sql = "INSERT INTO Users('" + USERNAME + "', '" + LICENSE_KEY + "', '" + START_DATE + "', '" + END_DATE + "', '" + LICENSE_TYPE + "') "
+                    + "VALUES (?,?,?,?,?);";
+            stmt = c.prepareStatement(sql);
+            stmt.setString(1, this.userName);
+            stmt.setString(2, this.licenseKey);
+            stmt.setLong(3, this.startDate);
+            stmt.setLong(4, this.endDate);
+            stmt.setString(5, this.licenseType.name());
+            
+            stmt.executeUpdate();
 
             stmt.close();
             c.commit();
